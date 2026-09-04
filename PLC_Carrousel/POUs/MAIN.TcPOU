@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{3d103e5b-378d-4714-904d-dc2f21a0500b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    fbCarrousel : FB_Carrousel;              // bloc carrousel
+
+    bLaserIn    : BOOL;                      // capteur laser
+    bZeroIn     : BOOL;                      // capteur zéro
+    aResetBacIn : ARRAY[1..8] OF BOOL;       // BP reset bacs
+
+    nPieceBacCmd : INT := 20;                // consigne pièces / bac
+    tVerinCmd    : TIME := T#500MS;          // temps mouvement vérin
+
+    bVerinAvOut : BOOL;                      // cmd vérin avant
+    bVerinArOut : BOOL;                      // cmd vérin arrière
+    nBacOut     : INT;                       // bac en cours
+    bDefautOut  : BOOL;                      // défaut carrousel
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbCarrousel(
+    bLaser    := bLaserIn,
+    bZero     := bZeroIn,
+    nPieceBac := nPieceBacCmd,
+    tVerin    := tVerinCmd,
+    aResetBac := aResetBacIn,
+	
+	bVerinAv  => bVerinAvOut,
+    bVerinAr  => bVerinArOut,
+    nBac      => nBacOut,
+    bDefaut   => bDefautOut
+);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

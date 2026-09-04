@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Carrousel" Id="{f22b2fe3-ab6a-4402-97da-3f97924cd680}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Carrousel
+
+VAR_INPUT
+    bLaser    : BOOL;                 // détection pièce
+    bZero     : BOOL;                 // origine carrousel
+    nPieceBac : INT;                  // consigne pièces / bac
+    tVerin    : TIME;                 // temps mouvement vérin
+    aResetBac : ARRAY[1..8] OF BOOL;  // BP reset bacs
+END_VAR
+
+VAR_OUTPUT
+    bVerinAv : BOOL;                  // cmd vérin avant
+    bVerinAr : BOOL;                  // cmd vérin arrière
+    nBac     : INT;                   // bac en position
+    bDefaut  : BOOL;                  // défaut carrousel
+END_VAR
+
+VAR
+    eMode      : E_ModeCarrousel := E_ModeCarrousel.INIT;    // mode machine
+    eEtatCycle : E_EtatCycle := E_EtatCycle.ATTENTE;         // état cycle
+
+    aPieceBac : ARRAY[1..8] OF INT;   // compteurs bacs
+    nImp      : INT := 0;             // nb cycles vérin
+
+    fbLaser      : R_TRIG;            // front laser
+    fbTempoVerin : TON;               // tempo vérin
+    aTempoReset  : ARRAY[1..8] OF TON;// tempo BP 10 s
+
+    bResetGlobal : BOOL;               // reset général
+    i            : INT;                // index bac
+    j            : INT;                // index reset
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Front capteur pièce
+fbLaser(CLK := bLaser);
+
+
+// Reset des bacs
+bResetGlobal := FALSE;
+
+FOR i := 1 TO 8 DO
+
+    IF aResetBac[i] THEN
+        aPieceBac[i] := 0;                    // reset bac
+    END_IF
+
+    aTempoReset[i](
+        IN := aResetBac[i],
+        PT := T#10S
+    );
+
+    IF aTempoReset[i].Q THEN
+        bResetGlobal := TRUE;
+    END_IF
+
+END_FOR
+
+
+// Reset général + acquittement défaut
+IF bResetGlobal THEN
+
+    FOR j := 1 TO 8 DO
+        aPieceBac[j] := 0;
+    END_FOR
+
+    bVerinAv := FALSE;
+    bVerinAr := FALSE;
+    bDefaut  := FALSE;
+
+    nImp := 0;
+
+    fbTempoVerin(IN := FALSE);
+
+    eEtatCycle := E_EtatCycle.ATTENTE;
+    eMode := E_ModeCarrousel.INIT;
+
+
+ELSE
+
+    CASE eMode OF
+
+        // -------------------------------------------------
+        E_ModeCarrousel.INIT:
+
+            bVerinAv := FALSE;
+            bVerinAr := FALSE;
+            bDefaut  := FALSE;
+
+            nImp := 0;
+            fbTempoVerin(IN := FALSE);
+
+            // Point zéro trouvé
+            IF bZero THEN
+                nBac := 1;
+                eEtatCycle := E_EtatCycle.ATTENTE;
+                eMode := E_ModeCarrousel.AUTO;
+            END_IF
+
+
+        // -------------------------------------------------
+        E_ModeCarrousel.AUTO:
+
+            // Contrôle paramètres
+            IF (nPieceBac <= 0)
+            OR (tVerin <= T#0MS)
+            OR (nBac < 1)
+            OR (nBac > 8) THEN
+
+                bVerinAv := FALSE;
+                bVerinAr := FALSE;
+                eMode := E_ModeCarrousel.DEFAUT;
+
+            ELSE
+
+                CASE eEtatCycle OF
+
+                    // -----------------------------
+                    E_EtatCycle.ATTENTE:
+
+                        eEtatCycle := E_EtatCycle.COMPTAGE;
+
+
+                    // -----------------------------
+                    E_EtatCycle.COMPTAGE:
+
+                        IF fbLaser.Q THEN
+                            aPieceBac[nBac] := aPieceBac[nBac] + 1;
+                        END_IF
+
+                        IF aPieceBac[nBac] >= nPieceBac THEN
+                            eEtatCycle := E_EtatCycle.BAC_PLEIN;
+                        END_IF
+
+
+                    // -----------------------------
+                    E_EtatCycle.BAC_PLEIN:
+
+                        nImp := 0;
+
+                        bVerinAv := FALSE;
+                        bVerinAr := FALSE;
+
+                        eEtatCycle := E_EtatCycle.VERIN_SORTIE;
+
+
+                    // -----------------------------
+                    E_EtatCycle.VERIN_SORTIE:
+
+                        bVerinAv := TRUE;
+                        bVerinAr := FALSE;
+
+                        fbTempoVerin(
+                            IN := TRUE,
+                            PT := tVerin
+                        );
+
+                        IF fbTempoVerin.Q THEN
+
+                            bVerinAv := FALSE;
+                            fbTempoVerin(IN := FALSE);
+
+                            eEtatCycle := E_EtatCycle.VERIN_RENTREE;
+
+                        END_IF
+
+
+                    // -----------------------------
+                    E_EtatCycle.VERIN_RENTREE:
+
+                        bVerinAv := FALSE;
+                        bVerinAr := TRUE;
+
+                        fbTempoVerin(
+                            IN := TRUE,
+                            PT := tVerin
+                        );
+
+                        IF fbTempoVerin.Q THEN
+
+                            bVerinAr := FALSE;
+                            fbTempoVerin(IN := FALSE);
+
+                            nImp := nImp + 1;       // cycle vérin fait
+
+                            IF nImp >= 4 THEN
+                                eEtatCycle := E_EtatCycle.BAC_SUIVANT;
+                            ELSE
+                                eEtatCycle := E_EtatCycle.VERIN_SORTIE;
+                            END_IF
+
+                        END_IF
+
+
+                    // -----------------------------
+                    E_EtatCycle.BAC_SUIVANT:
+
+                        nBac := nBac + 1;
+
+                        IF nBac > 8 THEN
+                            nBac := 1;
+                        END_IF
+
+                        // Bac déjà plein
+                        IF aPieceBac[nBac] >= nPieceBac THEN
+                            eEtatCycle := E_EtatCycle.ATTENTE_BAC;
+                        ELSE
+                            eEtatCycle := E_EtatCycle.COMPTAGE;
+                        END_IF
+
+
+                    // -----------------------------
+                    E_EtatCycle.ATTENTE_BAC:
+
+                        bVerinAv := FALSE;
+                        bVerinAr := FALSE;
+
+                        // Reprise après reset du bac
+                        IF aPieceBac[nBac] < nPieceBac THEN
+                            eEtatCycle := E_EtatCycle.COMPTAGE;
+                        END_IF
+
+
+                    // -----------------------------
+                    ELSE
+                        eMode := E_ModeCarrousel.DEFAUT;
+
+                END_CASE
+
+            END_IF
+
+
+        // -------------------------------------------------
+        E_ModeCarrousel.DEFAUT:
+
+            bVerinAv := FALSE;
+            bVerinAr := FALSE;
+            bDefaut  := TRUE;
+
+            fbTempoVerin(IN := FALSE);
+
+    END_CASE
+
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
