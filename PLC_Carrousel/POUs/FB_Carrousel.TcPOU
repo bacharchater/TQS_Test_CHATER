@@ -79,7 +79,10 @@ IF bResetGlobal THEN
 
 
 ELSE
-
+	// Valeurs sures par defaut pour chaque cycle PLC
+	bVerinAv := FALSE;
+	bVerinAr := FALSE;
+	
     CASE eMode OF
 
         // -------------------------------------------------
@@ -108,10 +111,13 @@ ELSE
             OR (tVerin <= T#0MS)
             OR (nBac < 1)
             OR (nBac > 8) THEN
-
-                bVerinAv := FALSE;
-                bVerinAr := FALSE;
-                eMode := E_ModeCarrousel.DEFAUT;
+				bVerinAv := FALSE;
+				bVerinAr := FALSE;
+				bDefaut  := TRUE;
+				
+				fbTempoVerin(IN := FALSE);
+				eMode := E_ModeCarrousel.DEFAUT;
+                
 
             ELSE
 
@@ -119,21 +125,24 @@ ELSE
 
                     // -----------------------------
                     E_EtatCycle.ATTENTE:
-
+						// Prise en compte d'une piece des l'entree en AUTO
+						IF fbLaser.Q
+						AND (NOT aResetBac[nBac]) THEN
+							aPieceBac[nBac] := aPieceBac[nBac] + 1;
+						END_IF
                         eEtatCycle := E_EtatCycle.COMPTAGE;
-
 
                     // -----------------------------
                     E_EtatCycle.COMPTAGE:
 
-                        IF fbLaser.Q THEN
-                            aPieceBac[nBac] := aPieceBac[nBac] + 1;
-                        END_IF
+						IF fbLaser.Q
+						AND (NOT aResetBac[nBac]) THEN
+							aPieceBac[nBac] := aPieceBac[nBac] + 1;
+						END_IF
 
                         IF aPieceBac[nBac] >= nPieceBac THEN
                             eEtatCycle := E_EtatCycle.BAC_PLEIN;
                         END_IF
-
 
                     // -----------------------------
                     E_EtatCycle.BAC_PLEIN:
@@ -217,16 +226,21 @@ ELSE
                         bVerinAv := FALSE;
                         bVerinAr := FALSE;
 
-                        // Reprise après reset du bac
-                        IF aPieceBac[nBac] < nPieceBac THEN
-                            eEtatCycle := E_EtatCycle.COMPTAGE;
-                        END_IF
+						// Reprise uniquement sur reset du bac concerne
+						IF aResetBac[nBac] THEN
+							eEtatCycle := E_EtatCycle.COMPTAGE;
+						END_IF
 
 
                     // -----------------------------
-                    ELSE
-                        eMode := E_ModeCarrousel.DEFAUT;
-
+					ELSE
+						bVerinAv := FALSE;
+						bVerinAr := FALSE;
+						bDefaut  := TRUE;
+					
+						fbTempoVerin(IN := FALSE);
+						eMode := E_ModeCarrousel.DEFAUT;
+						
                 END_CASE
 
             END_IF
@@ -240,6 +254,15 @@ ELSE
             bDefaut  := TRUE;
 
             fbTempoVerin(IN := FALSE);
+			ELSE
+			
+				// Mode incoherent : passage controle en defaut
+				bVerinAv := FALSE;
+				bVerinAr := FALSE;
+				bDefaut  := TRUE;
+			
+				fbTempoVerin(IN := FALSE);
+				eMode := E_ModeCarrousel.DEFAUT;			
 
     END_CASE
 
