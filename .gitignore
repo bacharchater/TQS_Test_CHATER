@@ -1,12 +1,25 @@
 # macOS
 .DS_Store
 **/.DS_Store
+._*
+
+# Editor and backup files
+*.bak
+*.~u
+*.orig
+*~
+~$*
 
 # TwinCAT generated / temporary files
-*.bak
 *.tclrs
 *.tmc
 *.tmcRefac
+*.tpy
+*.library
+*.compiled-library
+*.compileinfo
+LineIDs.dbg
+*.tnzip
 
 **/_Boot/
 **/_CompileInfo/
@@ -14,11 +27,36 @@
 **/_ModuleInstall/
 **/_Deployment/
 **/_Repository/
+**/[Pp]ackages/
+**/.TcGit/
+
+# TwinCAT HMI generated / restored files
+**/.engineering_servers/
+**/.hmishare/
+**/.hmiframework/
+**/.hmipkgs/
+**/[Bb]in/
+**/[Oo]bj/
+**/engineering.html
+**/tchmipublish.journal.json
+**/liveview_*
+# Generated locally; contains a TLS private key and must not be committed.
+**/Server/TcHmiSrv/TcHmiSrv.Config.default.json
+*.cache
+*.db-shm
+*.db-wal
+*.pid
 
 # Visual Studio / TwinCAT XAE Shell
 **/.vs/
 *.suo
 *.user
+*.userosscache
+*.sln.docstates
+
+# Generated TypeScript metadata
+**/*.d.ts
+**/*.js.map
 
 # LaTeX generated / temporary files
 *.aux
@@ -43,4 +81,3 @@ _minted-*/
 # Windows
 Thumbs.db
 Desktop.ini
-docs/rapport/main.pdf
