@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# TwinCAT generated / temporary files
+*.bak
+*.tclrs
+*.tmc
+*.tmcRefac
+
+**/_Boot/
+**/_CompileInfo/
+**/_Libraries/
+**/_ModuleInstall/
+**/_Deployment/
+**/_Repository/
+
+# Visual Studio / TwinCAT XAE Shell
+**/.vs/
+*.suo
+*.user
+
+# Windows
+Thumbs.db
+Desktop.ini

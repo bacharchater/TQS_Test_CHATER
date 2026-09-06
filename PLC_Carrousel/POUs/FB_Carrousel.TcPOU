@@ -16,6 +16,12 @@ VAR_OUTPUT
     bVerinAr : BOOL;                  // cmd vérin arrière
     nBac     : INT;                   // bac en position
     bDefaut  : BOOL;                  // défaut carrousel
+	
+	// Informations destinées à l'IHM
+    eModeHmi      : E_ModeCarrousel;
+    eEtatCycleHmi : E_EtatCycle;
+    aPieceBacHmi  : ARRAY[1..8] OF INT;
+    nImpHmi       : INT;
 END_VAR
 
 VAR
@@ -266,7 +272,16 @@ ELSE
 
     END_CASE
 
-END_IF]]></ST>
+END_IF
+// Mise à disposition des informations pour l'IHM
+eModeHmi      := eMode;
+eEtatCycleHmi := eEtatCycle;
+nImpHmi       := nImp;
+
+FOR i := 1 TO 8 DO
+    aPieceBacHmi[i] := aPieceBac[i];
+END_FOR
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

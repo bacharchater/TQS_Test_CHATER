@@ -16,6 +16,18 @@ VAR
     bVerinArOut : BOOL;                      // cmd vérin arrière
     nBacOut     : INT;                       // bac en cours
     bDefautOut  : BOOL;                      // défaut carrousel
+	
+	eModeOut      : E_ModeCarrousel;
+	eEtatCycleOut : E_EtatCycle;
+	aPieceBacOut  : ARRAY[1..8] OF INT;
+	nImpOut       : INT;
+	    // Visualisation du bac actif
+    aBacActifVisu : ARRAY[1..8] OF BOOL;
+    iVisu         : INT;
+	
+	    // Textes pour la visualisation
+    sModeVisu      : STRING(20);
+    sEtatCycleVisu : STRING(30);
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbCarrousel(
@@ -28,8 +40,21 @@ END_VAR]]></Declaration>
 	bVerinAv  => bVerinAvOut,
     bVerinAr  => bVerinArOut,
     nBac      => nBacOut,
-    bDefaut   => bDefautOut
-);]]></ST>
+    bDefaut   => bDefautOut,
+	
+	eModeHmi      => eModeOut,
+    eEtatCycleHmi => eEtatCycleOut,
+    aPieceBacHmi  => aPieceBacOut,
+    nImpHmi       => nImpOut
+);
+// Indication du bac actuellement en position
+FOR iVisu := 1 TO 8 DO
+    aBacActifVisu[iVisu] := (nBacOut = iVisu);
+END_FOR
+// Textes pour la visualisation
+sModeVisu      := TO_STRING(eModeOut);
+sEtatCycleVisu := TO_STRING(eEtatCycleOut);
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
