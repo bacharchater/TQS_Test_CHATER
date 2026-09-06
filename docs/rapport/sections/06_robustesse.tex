@@ -27,6 +27,9 @@ END_FOR
     \textbf{Effet de l'appui long}\par\small
     Le maintien pendant 10 s de l'un des huit boutons remet à zéro les huit compteurs, les deux commandes et \texttt{nImp}. Le défaut est acquitté, le temporisateur du vérin est réinitialisé et le mode repasse à \texttt{INIT}.
   \end{primarycard}
+  \begin{notebox}{Effet individuel}
+    Dès qu'un bouton \texttt{aResetBac[i]} est vrai, le compteur du bac \texttt{i} est maintenu à zéro. Si le bouton reste vrai pendant 10 s, le même signal déclenche ensuite la remise à zéro globale.
+  \end{notebox}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
   \subsection{Conditions de défaut présentes}
@@ -56,7 +59,7 @@ END_FOR
   \end{center}
 
   \begin{notebox}[colback=ekinfo,colframe=blue!25]{Portée réelle}
-    Cette version gère des incohérences logicielles et de paramétrage. Elle ne réalise pas encore de diagnostic mécanique détaillé ni de fonction de sécurité machine.
+    Cette version gère des incohérences logicielles et de paramétrage. Elle ne contrôle aucun fin de course, ne réalise pas de diagnostic mécanique détaillé et ne constitue pas une fonction de sécurité machine.
   \end{notebox}
 \end{minipage}
 

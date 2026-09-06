@@ -1,6 +1,6 @@
 % 01 - CONTEXTE
 % ==============================================================
-\sectionintro{01 · Démarche}{Contexte et objectif}{Conserver la trace de la première approche, puis présenter la version finale structurée et validée sous TwinCAT.}
+\sectionintro{01 · Démarche}{Contexte et objectif}{Conserver la trace de la première approche, puis décrire fidèlement l'état actuel du projet TwinCAT.}
 
 \noindent
 \begin{minipage}[t]{0.355\textwidth}\vspace{0pt}
@@ -11,7 +11,7 @@
 
   \subsection{Objectif du rapport}
   \small
-  Le document distingue la \textbf{solution de principe montrée pendant l'entretien} de la \textbf{version finale approfondie, compilée, exécutée et validée sur le runtime local}. Le fichier source joint correspond à cette version finale ; les fonctions non réalisées restent identifiées comme évolutions.
+  Le document distingue la \textbf{solution de principe montrée pendant l'entretien} de la \textbf{version approfondie actuellement présente dans le dépôt}. Les résultats d'essais déjà consignés sont conservés comme tels ; la présente mise à jour vérifie statiquement les objets TwinCAT et n'affirme pas avoir rejoué le runtime. Les fonctions non réalisées sont identifiées comme limites ou évolutions.
 
   \subsection{Fil conducteur}
   \begin{enumerate}\small
@@ -19,7 +19,7 @@
     \item isoler les modes et les états ;
     \item traduire la séquence en ST ;
     \item provoquer des cas limites ;
-    \item corriger puis rejouer les essais.
+    \item comparer le rapport aux sources PLC et à la Visualization V1.
   \end{enumerate}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
@@ -49,7 +49,7 @@
   \end{center}
 
   \begin{notebox}{Ce qui a changé ensuite}
-    La reprise sous TwinCAT remplace cette séquence linéaire par deux niveaux : un mode global \texttt{INIT / AUTO / DEFAUT}, puis une machine d'états dédiée au cycle \texttt{AUTO}.
+    La reprise sous TwinCAT remplace cette séquence linéaire par deux niveaux : un mode global \texttt{INIT / AUTO / DEFAUT}, puis une machine d'états dédiée au cycle \texttt{AUTO}. Une PLC Visualization V1 donne accès à la simulation et à la supervision des variables exposées par \texttt{MAIN}.
   \end{notebox}
 
   \begin{center}

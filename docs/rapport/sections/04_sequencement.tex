@@ -34,7 +34,7 @@
     \toprule
     \textbf{Transition} & \textbf{Condition}\\
     \midrule
-    A0 → A1 & entrée dans le mode \texttt{AUTO}\\
+    A0 → A1 & premier traitement de \texttt{ATTENTE} en mode \texttt{AUTO} ; transition sans condition\\
     A1 → A2 & \texttt{aPieceBac[nBac] >= nPieceBac}\\
     A2 → A3 & transition immédiate\\
     A3 → A4 & temporisation de sortie écoulée\\
@@ -48,11 +48,11 @@
 
   \begin{primarycard}
     \textbf{Lecture du cycle vérin}\par\small
-    Une unité de \texttt{nImp} correspond à une sortie suivie d'une rentrée. Le plateau ne passe au bac suivant qu'après quatre cycles complets.
+    Une unité de \texttt{nImp} correspond à une phase avant temporisée suivie d'une phase arrière temporisée. Le numéro logique de bac ne change qu'après quatre cycles complets ; le code ne vérifie pas la position mécanique du plateau.
   \end{primarycard}
 
   \begin{notebox}[colback=ekwarning,colframe=orange!35]{Référencement}
-    \texttt{INIT} exploite le capteur inductif comme référence. La stratégie mécanique de recherche du zéro n'étant pas définie, la version réalisée considère \texttt{bZero = TRUE} comme condition de validation du référencement.
+    \texttt{INIT} exploite uniquement l'entrée logique \texttt{bZero}. La nature physique du capteur et la stratégie mécanique de recherche du zéro ne sont pas définies dans les sources ; \texttt{bZero = TRUE} valide le référencement.
   \end{notebox}
 }
 

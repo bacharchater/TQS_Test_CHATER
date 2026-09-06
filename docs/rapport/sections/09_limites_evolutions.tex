@@ -1,6 +1,6 @@
 % 09 - LIMITES
 % ==============================================================
-\sectionintro{09 · Périmètre maîtrisé}{Limites et évolutions possibles}{Distinguer ce qui est validé de ce qui dépend encore de la mécanique, de la sécurité machine ou d'un axe réel.}
+\sectionintro{10 · Périmètre maîtrisé}{Limites et évolutions possibles}{Distinguer la logique PLC et sa Visualization V1 de ce qui dépend encore de la mécanique, de la sécurité ou d'une supervision avancée.}
 
 \twocolpage{
   \begin{primarycard}
@@ -16,7 +16,9 @@
     \item temporisation de surveillance mécanique indépendante ;
     \item chaîne d'arrêt d'urgence et fonctions de sécurité ;
     \item diagnostic par code défaut détaillé ;
-    \item interface HMI.
+    \item alarmes avancées, acquittements historisés et historique d'événements ;
+    \item application TwinCAT HMI V2 ou supervision web dédiée ;
+    \item édition depuis la Visualization V1 de la consigne et du temps vérin.
   \end{itemize}
 }{
   \subsection{Évolutions proposées}
@@ -26,16 +28,20 @@
     \midrule
     1 & ajouter les capteurs de fin de course et séparer durée de commande et temporisation de surveillance\\
     1 & intégrer une autorisation issue de la chaîne de sécurité et définir le comportement à la perte d'énergie\\
-    2 & mémoriser un code défaut et l'étape d'apparition pour la maintenance\\
+    2 & mémoriser un code défaut et l'étape d'apparition pour la maintenance, puis ajouter une vue d'alarmes\\
     2 & qualifier le filtrage du laser selon la cadence et le capteur réel\\
     2 & définir la conservation ou la remise à zéro des compteurs après coupure\\
-    3 & ajouter une HMI simple : bac actif, compteurs, mode et cause de défaut\\
+    3 & faire évoluer la PLC Visualization V1 ou créer une TwinCAT HMI V2 avec historique et gestion des droits\\
     3 & étudier la variante motorisée avec \texttt{AXIS\_REF} et blocs PLCopen Motion\\
     \bottomrule
   \end{tabularx}
 
   \begin{notebox}[colback=ekinfo,colframe=blue!25]{Variante motorisée}
     \texttt{MC\_Power}, \texttt{MC\_MoveModulo}, \texttt{MC\_Halt} et \texttt{MC\_Stop} restent des pistes d'évolution. Aucun de ces blocs n'est présenté comme utilisé ou testé dans la version pneumatique.
+  \end{notebox}
+
+  \begin{notebox}{Limite de la Visualization V1}
+    La vue actuelle supervise le cycle et permet la simulation. Elle ne fournit ni journal d'alarmes, ni historique, ni diagnostic mécanique, et ne remplace pas une interface de production sécurisée.
   \end{notebox}
 }
 

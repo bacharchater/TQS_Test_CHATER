@@ -1,6 +1,6 @@
 % ANNEXE ST
 % ==============================================================
-\sectionintro{Annexe A · TwinCAT 3}{Types et interface du bloc}{Le code de la version finale est regroupé dans le fichier \texttt{FB\_Carrousel.st} joint au rapport.}
+\sectionintro{Annexe A · TwinCAT 3}{Types et interface du bloc}{Les extraits ci-dessous correspondent aux objets \texttt{.TcDUT} et \texttt{.TcPOU} présents dans le projet.}
 
 \noindent
 \begin{minipage}[t]{0.47\textwidth}\vspace{0pt}
@@ -54,6 +54,10 @@ VAR_OUTPUT
     bVerinAr : BOOL; // cmd arriere
     nBac     : INT;  // bac en position
     bDefaut  : BOOL; // defaut carrousel
+    eModeHmi      : E_ModeCarrousel;
+    eEtatCycleHmi : E_EtatCycle;
+    aPieceBacHmi  : ARRAY[1..8] OF INT;
+    nImpHmi       : INT;
 END_VAR
 
 VAR
@@ -67,13 +71,13 @@ VAR
     fbTempoVerin : TON;
     aTempoReset  : ARRAY[1..8] OF TON;
     bResetGlobal : BOOL;
-    i, j         : INT;
+    i            : INT;
+    j            : INT;
 END_VAR
 \end{lstlisting}
 
   \begin{primarycard}
-    \textbf{Organisation du source joint}\par\small
-    Le fichier regroupe les deux DUTs, le bloc fonction et un exemple de \texttt{MAIN}. Dans le projet XAE, ces éléments restent répartis dans leurs objets TwinCAT respectifs.
+    \textbf{Variables exposées à la Visualization}\par\small
+    \texttt{MAIN} relie les quatre sorties HMI du bloc à \texttt{eModeOut}, \texttt{eEtatCycleOut}, \texttt{aPieceBacOut} et \texttt{nImpOut}. Il dérive aussi \texttt{sModeVisu}, \texttt{sEtatCycleVisu} et \texttt{aBacActifVisu[1..8]} pour l'affichage.
   \end{primarycard}
 \end{minipage}
-

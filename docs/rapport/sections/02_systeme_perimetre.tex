@@ -9,16 +9,18 @@
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of root,minimum width=53mm,minimum height=8mm,align=left] (plc) {PLC · projet PLC};
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of plc,minimum width=53mm,minimum height=8mm,align=left] (dut) {DUTs · \texttt{E\_ModeCarrousel}\\\phantom{DUTs · }\texttt{E\_EtatCycle}};
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of dut,minimum width=53mm,minimum height=8mm,align=left] (pou) {POUs · \texttt{MAIN}\\\phantom{POUs · }\texttt{FB\_Carrousel}};
-    \node[draw=ekline,fill=white,rounded corners=2mm,below=of pou,minimum width=53mm,minimum height=8mm,align=left] (task) {PlcTask · exécution cyclique};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of pou,minimum width=53mm,minimum height=8mm,align=left] (visu) {VISUs · \texttt{Visualization}\\\phantom{VISUs · }gestionnaire et textes};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of visu,minimum width=53mm,minimum height=8mm,align=left] (task) {PlcTask · cycle de 10 ms};
     \draw[flow] (root)--(plc);
     \draw[flow] (plc)--(dut);
     \draw[flow] (dut)--(pou);
-    \draw[flow] (pou)--(task);
+    \draw[flow] (pou)--(visu);
+    \draw[flow] (visu)--(task);
   \end{tikzpicture}
 
   \begin{primarycard}
     \textbf{Répartition des rôles}\par\small
-    \texttt{MAIN} relie les variables d'entrée et de sortie. Toute la logique machine est regroupée dans \texttt{FB\_Carrousel}, ce qui facilite la lecture en ligne et la réutilisation du bloc.
+    \texttt{MAIN} instancie le bloc, relie ses entrées/sorties et prépare les indicateurs et chaînes de caractères destinés à la Visualization. La logique de cycle reste regroupée dans \texttt{FB\_Carrousel}.
   \end{primarycard}
 }{
   \subsection{Fonctions présentes dans la version réalisée}
@@ -26,20 +28,21 @@
     \toprule
     \textbf{Fonction} & \textbf{Comportement implémenté}\\
     \midrule
-    Référencement & attente du capteur inductif, puis affectation du bac 1\\
+    Référencement & attente de l'entrée logique \texttt{bZero}, puis affectation du bac 1\\
     Comptage & front montant du signal du capteur laser avec \texttt{R\_TRIG}\\
     Mémoire & huit compteurs dans \texttt{aPieceBac[1..8]}\\
-    Indexation & quatre cycles complets de sortie et de rentrée du vérin\\
-    Temporisation & temps de mouvement réglable par \texttt{tVerin}\\
+    Indexation & quatre cycles logiques complets : commande avant, puis commande arrière\\
+    Temporisation & durée de chaque phase simulée par un \texttt{TON} réglé avec \texttt{tVerin}\\
     Bouclage & retour logique du bac 8 vers le bac 1\\
     Bac suivant déjà plein & attente de l'opérateur dans \texttt{ATTENTE\_BAC} jusqu'à la réinitialisation du bac\\
     Réinitialisation & appui bref : bac concerné ; maintien 10 s : huit compteurs\\
-    Défaut & paramètres invalides, commandes logiques à \texttt{FALSE}, reprise par \texttt{INIT}\\
+    Défaut & paramètres ou états invalides, commandes à \texttt{FALSE}, reprise par \texttt{INIT}\\
+    Supervision V1 & mode, état, bac actif, compteurs, vérin, cycles et commandes de simulation\\
     \bottomrule
   \end{tabularx}
 
   \begin{notebox}[colback=ekwarning,colframe=orange!35]{Interprétation retenue}
-    Le terme « 4 impulsions » a été traduit par quatre cycles complets du vérin : sortie temporisée, rentrée temporisée, puis incrément de \texttt{nImp}.
+    Le terme « 4 impulsions » a été traduit par quatre cycles de commande complets : \texttt{bVerinAv}, puis \texttt{bVerinAr}, chaque phase étant validée par temporisation avant l'incrément de \texttt{nImp}. Aucun retour de fin de course n'est câblé dans le bloc.
   \end{notebox}
 }
 

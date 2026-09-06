@@ -1,18 +1,18 @@
 % 10 - CONCLUSION
 % ==============================================================
-\sectionintro{10 · Synthèse}{Conclusion}{Bilan de l'architecture mise en place, des essais réalisés et des limites identifiées.}
+\sectionintro{11 · Synthèse}{Conclusion}{Bilan de l'architecture, de la PLC Visualization V1, du relevé d'essais et des limites identifiées.}
 
 \twocolpage{
   \begin{primarycard}
     \textbf{Résultat obtenu}\par\small
-    Le carrousel est structuré autour de trois modes et d'une machine d'états dédiée au cycle \texttt{AUTO}. La logique mémorise le comptage des huit bacs, réalise quatre cycles du vérin par indexation et passe en \texttt{ATTENTE\_BAC} lorsque le bac suivant est déjà plein.
+    Le carrousel est structuré autour de trois modes et d'une machine d'états dédiée au cycle \texttt{AUTO}. La logique mémorise les huit compteurs, réalise quatre cycles de commande avant/arrière par indexation et passe en \texttt{ATTENTE\_BAC} lorsque le bac suivant est déjà plein. La PLC Visualization V1 expose le suivi et les commandes de simulation.
   \end{primarycard}
 
   \subsection{Résultats des essais}
   \begin{itemize}\small
     \item passage de \texttt{INIT} à \texttt{AUTO} après validation du zéro ;
     \item comptage sur front montant du capteur laser ;
-    \item indexation et bouclage du bac 8 vers le bac 1 ;
+    \item quatre cycles temporisés et bouclage logique du bac 8 vers le bac 1 ;
     \item réinitialisation individuelle ou globale des compteurs ;
     \item traitement de trois situations limites ;
     \item acquittement du défaut avec retour par \texttt{INIT}.
@@ -20,15 +20,15 @@
 }{
   \subsection{Démarche de validation}
   \small
-  Le cycle a d'abord été implémenté et exécuté sur le runtime local. Les essais ont ensuite couvert le fonctionnement nominal, la saturation des huit bacs et deux paramètres invalides. Les corrections ont été intégrées à la version finale, puis les essais concernés ont été rejoués avec succès.
+  Le relevé existant couvre le fonctionnement nominal, la saturation des huit bacs et deux paramètres invalides. La synchronisation documentaire a ensuite comparé ces affirmations à \texttt{MAIN.TcPOU}, \texttt{FB\_Carrousel.TcPOU}, aux DUTs, à la Visualization, à son gestionnaire, à la liste de textes et au projet \texttt{.plcproj}.
 
   \begin{card}
     \textbf{Version livrée}\par\small
-    Le fichier \texttt{FB\_Carrousel.st} reprend le code de la version finale validée. Il regroupe les deux DUTs, le bloc fonctionnel et un exemple de \texttt{MAIN} afin de faciliter la revue.
+    Les sources de référence sont les objets TwinCAT du dépôt : \texttt{POUs/MAIN.TcPOU}, \texttt{POUs/FB\_Carrousel.TcPOU}, les deux DUTs et les objets de PLC Visualization. Aucun fichier agrégé \texttt{FB\_Carrousel.st} n'est livré.
   \end{card}
 
   \begin{notebox}[colback=eksuccess,colframe=green!30]{Synthèse}
-    La première séquence a permis de poser le principe. La reprise sous TwinCAT a structuré le cycle, isolé les modes machine et documenté les corrections issues des essais.
+    Le rapport décrit désormais l'implémentation et la Visualization V1 sans leur attribuer les fonctions absentes : retours de fin de course, sécurité machine, alarmes avancées, historique ou TwinCAT HMI V2.
   \end{notebox}
 }
 

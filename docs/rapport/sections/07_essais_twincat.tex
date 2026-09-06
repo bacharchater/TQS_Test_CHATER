@@ -1,17 +1,17 @@
 % 07 - VALIDATION
 % ==============================================================
-\sectionintro{07 · Essais TwinCAT}{Validation fonctionnelle}{La version finale a été compilée dans XAE, téléchargée sur le runtime local et validée en ligne.}
+\sectionintro{08 · Essais TwinCAT}{Relevé de validation fonctionnelle}{Les résultats ci-dessous reprennent les essais TwinCAT déjà consignés ; la synchronisation actuelle repose sur une revue statique des sources.}
 
 \begin{center}
-  \begin{minipage}[t]{.31\linewidth}\metric{0}{erreur au Rebuild}\end{minipage}\hfill
-  \begin{minipage}[t]{.31\linewidth}\metric{11}{scénarios rejoués}\end{minipage}\hfill
-  \begin{minipage}[t]{.31\linewidth}\metric{3}{cas limites corrigés}\end{minipage}
+  \begin{minipage}[t]{.31\linewidth}\metric{0}{erreur consignée au Rebuild}\end{minipage}\hfill
+  \begin{minipage}[t]{.31\linewidth}\metric{11}{essais consignés}\end{minipage}\hfill
+  \begin{minipage}[t]{.31\linewidth}\metric{3}{cas limites documentés}\end{minipage}
 \end{center}
 
 \vspace{2mm}
 \begin{tabularx}{\linewidth}{@{}L{43mm}Y L{25mm}@{}}
   \toprule
-  \textbf{Essai} & \textbf{Résultat observé} & \textbf{Statut}\\
+  \textbf{Essai} & \textbf{Résultat consigné} & \textbf{Statut}\\
   \midrule
   Détection du point zéro & \texttt{INIT → nBac = 1 → AUTO} & \ok\\
   Front du capteur laser & une seule incrémentation pour \texttt{FALSE → TRUE → FALSE} & \ok\\
@@ -27,8 +27,8 @@
   \bottomrule
 \end{tabularx}
 
-\begin{notebox}[colback=ekinfo,colframe=blue!25]{Version finale validée}
-  Le fichier \texttt{FB\_Carrousel.st} joint reprend le code de la version finale compilée et testée sous TwinCAT. Les scénarios de contrôle ont été rejoués après intégration des dernières corrections.
+\begin{notebox}[colback=ekinfo,colframe=blue!25]{Portée de la présente mise à jour}
+  Les comportements attendus du tableau ont été recoupés avec \texttt{POUs/FB\_Carrousel.TcPOU}. La compilation LaTeX du rapport est rejouée, mais le runtime TwinCAT et le Rebuild PLC ne le sont pas dans cette synchronisation documentaire.
 \end{notebox}
 
 \newpage

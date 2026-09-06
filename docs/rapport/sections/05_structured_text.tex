@@ -29,7 +29,7 @@ END_IF
   \end{notebox}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
-  \subsection{Séquence pneumatique réelle}
+  \subsection{Commandes pneumatiques temporisées}
 \begin{lstlisting}[style=stcode]
 E_EtatCycle.VERIN_SORTIE:
     bVerinAv := TRUE;
@@ -66,7 +66,7 @@ E_EtatCycle.VERIN_RENTREE:
 \end{lstlisting}
 
   \begin{notebox}{Commandes déterministes}
-    Au début de chaque cycle PLC, les deux commandes sont placées à \texttt{FALSE}. Seul l'état de mouvement actif commande ensuite \texttt{bVerinAv} ou \texttt{bVerinAr}. La fin d'une rentrée incrémente \texttt{nImp} sans activer de défaut.
+    Au début de chaque cycle PLC, les deux sorties sont placées à \texttt{FALSE}. Seul l'état actif commande ensuite \texttt{bVerinAv} ou \texttt{bVerinAr}. En l'absence d'entrées de fin de course, le \texttt{TON} simule la durée de chaque mouvement ; la fin de la phase arrière incrémente \texttt{nImp}.
   \end{notebox}
 \end{minipage}
 
