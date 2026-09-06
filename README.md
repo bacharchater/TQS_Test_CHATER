@@ -25,6 +25,8 @@ TQS_Test_CHATER/
 
 La solution `tqs/TQS_Test_CHATER.sln` constitue le point d'entrée principal et référence les projets PLC et HMI avec des chemins relatifs.
 
+Les dossiers de compilation, bibliothèques restaurées, paquets et fichiers temporaires TwinCAT/HMI ne font pas partie des sources du projet.
+
 ## PLC
 
 La logique métier est regroupée dans `FB_Carrousel`; `MAIN` assure les liaisons avec les entrées et les sorties.
@@ -50,7 +52,7 @@ PLC_Carrousel/
 
 ## Interfaces ajoutées après l'entretien
 
-Les interfaces opérateur ne faisaient pas partie de la demande initiale. Elles constituent un complément personnel destiné à rendre le cycle observable et à faciliter les essais.
+Les interfaces opérateur ne faisaient pas partie de la demande initiale. Elles constituent un complément personnel destiné à rendre le cycle observable et à faciliter les essais ; elles sont documentées séparément dans l'Annexe B du rapport.
 
 ### PLC Visualization V1
 
@@ -91,9 +93,25 @@ Cette V2 convient à la démonstration et à la simulation. Une qualification po
 
 ## Rapport technique
 
-Le [rapport final au format PDF](docs/Rapport_TQS_Chater_Bach-char.pdf) présente l'architecture TwinCAT, la machine d'états, le Structured Text, les essais et les cas limites. Les IHM réalisées après l'entretien sont documentées séparément du périmètre initial.
+Le [rapport final au format PDF](docs/Rapport_TQS_Chater_Bach-char.pdf) présente le travail demandé lors de l'entretien : architecture TwinCAT, machine d'états, Structured Text, essais et cas limites. Les IHM ajoutées ensuite sont volontairement isolées dans l'Annexe B.
 
-Les sources LaTeX sont versionnées dans `docs/rapport/`. Pour recompiler le rapport avec une distribution LaTeX complète :
+Les sources LaTeX sont versionnées dans `docs/rapport/` et séparées par sections :
+
+```text
+docs/rapport/
+├── main.tex
+├── sections/
+│   ├── 00_couverture.tex
+│   ├── 00_sommaire.tex
+│   ├── 01_contexte_objectif.tex
+│   ├── ...
+│   ├── 10_conclusion.tex
+│   ├── annexe_a_types_interface.tex
+│   └── annexe_b_ihm.tex
+└── images/
+```
+
+Pour recompiler le rapport avec une distribution LaTeX complète :
 
 ```bash
 cd docs/rapport

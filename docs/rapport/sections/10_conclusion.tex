@@ -1,11 +1,11 @@
 % 10 - CONCLUSION
 % ==============================================================
-\sectionintro{11 · Synthèse}{Conclusion}{Bilan de l'architecture, de la PLC Visualization V1, du relevé d'essais et des limites identifiées.}
+\sectionintro{10 · Synthèse}{Conclusion}{Bilan de l'architecture, du relevé d'essais et des limites identifiées.}
 
 \twocolpage{
   \begin{primarycard}
     \textbf{Résultat obtenu}\par\small
-    Le carrousel est structuré autour de trois modes et d'une machine d'états dédiée au cycle \texttt{AUTO}. La logique mémorise les huit compteurs, réalise quatre cycles de commande avant/arrière par indexation et passe en \texttt{ATTENTE\_BAC} lorsque le bac suivant est déjà plein. La PLC Visualization V1 expose le suivi et les commandes de simulation.
+    Le carrousel est structuré autour de trois modes et d'une machine d'états dédiée au cycle \texttt{AUTO}. La logique mémorise les huit compteurs, réalise quatre cycles de commande avant/arrière par indexation et passe en \texttt{ATTENTE\_BAC} lorsque le bac suivant est déjà plein.
   \end{primarycard}
 
   \subsection{Résultats des essais}
@@ -20,15 +20,15 @@
 }{
   \subsection{Démarche de validation}
   \small
-  Le relevé existant couvre le fonctionnement nominal, la saturation des huit bacs et deux paramètres invalides. La synchronisation documentaire a ensuite comparé ces affirmations à \texttt{MAIN.TcPOU}, \texttt{FB\_Carrousel.TcPOU}, aux DUTs, à la Visualization, à son gestionnaire, à la liste de textes et au projet \texttt{.plcproj}.
+  Le relevé existant couvre le fonctionnement nominal, la saturation des huit bacs et deux paramètres invalides. La synchronisation documentaire a ensuite comparé ces affirmations à \texttt{MAIN.TcPOU}, \texttt{FB\_Carrousel.TcPOU}, aux DUTs et au projet \texttt{.plcproj}.
 
   \begin{card}
     \textbf{Version livrée}\par\small
-    Les sources de référence sont les objets TwinCAT du dépôt : \texttt{POUs/MAIN.TcPOU}, \texttt{POUs/FB\_Carrousel.TcPOU}, les deux DUTs et les objets de PLC Visualization. Aucun fichier agrégé \texttt{FB\_Carrousel.st} n'est livré.
+    Les sources de référence sont les objets TwinCAT du dépôt : \texttt{POUs/MAIN.TcPOU}, \texttt{POUs/FB\_Carrousel.TcPOU} et les deux DUTs. Aucun fichier agrégé \texttt{FB\_Carrousel.st} n'est livré.
   \end{card}
 
   \begin{notebox}[colback=eksuccess,colframe=green!30]{Synthèse}
-    Le rapport décrit désormais l'implémentation et la Visualization V1 sans leur attribuer les fonctions absentes : retours de fin de course, sécurité machine, alarmes avancées, historique ou TwinCAT HMI V2.
+    Le corps du rapport reste centré sur le besoin technique initial. Les deux IHM développées ensuite à titre personnel sont isolées en \hyperref[annexe:ihm]{Annexe B} afin de distinguer clairement le sujet demandé de l'initiative complémentaire.
   \end{notebox}
 }
 
