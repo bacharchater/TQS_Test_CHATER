@@ -20,6 +20,7 @@
 *.compileinfo
 LineIDs.dbg
 *.tnzip
+!tqs/TQS_Test_CHATER.tnzip
 
 **/_Boot/
 **/_CompileInfo/

@@ -10,6 +10,7 @@ Le périmètre initial porte sur le pilotage d'un carrousel de conditionnement �
 TQS_Test_CHATER/
 ├── tqs/
 │   ├── TQS_Test_CHATER.sln         # Solution commune PLC + TwinCAT HMI
+│   ├── TQS_Test_CHATER.tnzip       # Archive propre des sources TwinCAT
 │   ├── TQS_Test_CHATER/
 │   │   ├── PLC_Carrousel/          # Programme automate et PLC Visualization V1
 │   │   └── TQS_Test_CHATER.tsproj  # Projet TwinCAT XAE
@@ -105,7 +106,9 @@ Le PDF compilé dans `docs/rapport/main.pdf` reste local et est ignoré. Le docu
 
 Les sources PLC, les vues HMI, les fichiers TypeScript, les scripts JavaScript chargés par l'application, les configurations de projet et `TqsDashboard.css` sont conservés dans Git.
 
-Les éléments reconstruits localement sont exclus : `Packages`, `.hmishare`, `bin`, `obj`, `_Boot`, `_CompileInfo`, `_Libraries`, fichiers `.tmc`, sauvegardes et temporaires. La configuration contenant le certificat TLS et sa clé privée locale ainsi que les archives `.tnzip` ne sont pas versionnées.
+Les éléments reconstruits localement sont exclus : `Packages`, `.hmishare`, `bin`, `obj`, `_Boot`, `_CompileInfo`, `_Libraries`, fichiers `.tmc`, sauvegardes et temporaires. La configuration contenant le certificat TLS et sa clé privée locale n'est pas versionnée.
+
+L'archive de référence `tqs/TQS_Test_CHATER.tnzip` constitue l'unique exception pour ce format. Elle est générée à partir de la version finale locale des sources suivies dans `tqs/`, puis contrôlée avant publication, sans inclure les paquets restaurés, les résultats de compilation ni les secrets locaux.
 
 ## Validation et ouverture du projet
 
@@ -115,6 +118,7 @@ Le projet PLC a été compilé, exécuté et testé sous TwinCAT 3 sur un runtim
 - projet XAE : `tqs/TQS_Test_CHATER/TQS_Test_CHATER.tsproj` ;
 - projet PLC : `tqs/TQS_Test_CHATER/PLC_Carrousel/PLC_Carrousel.plcproj` ;
 - projet TwinCAT HMI : `tqs/HMI_Carrousel/HMI_Carrousel.hmiproj` ;
+- archive TwinCAT vérifiée : `tqs/TQS_Test_CHATER.tnzip` ;
 - rapport final : `docs/Rapport_TQS_Chater_Bach-char.pdf`.
 
 ---
