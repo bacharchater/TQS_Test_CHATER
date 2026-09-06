@@ -9,18 +9,16 @@
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of root,minimum width=53mm,minimum height=8mm,align=left] (plc) {PLC · projet PLC};
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of plc,minimum width=53mm,minimum height=8mm,align=left] (dut) {DUTs · \texttt{E\_ModeCarrousel}\\\phantom{DUTs · }\texttt{E\_EtatCycle}};
     \node[draw=ekline,fill=white,rounded corners=2mm,below=of dut,minimum width=53mm,minimum height=8mm,align=left] (pou) {POUs · \texttt{MAIN}\\\phantom{POUs · }\texttt{FB\_Carrousel}};
-    \node[draw=ekline,fill=white,rounded corners=2mm,below=of pou,minimum width=53mm,minimum height=8mm,align=left] (visu) {VISUs · \texttt{Visualization}\\\phantom{VISUs · }gestionnaire et textes};
-    \node[draw=ekline,fill=white,rounded corners=2mm,below=of visu,minimum width=53mm,minimum height=8mm,align=left] (task) {PlcTask · cycle de 10 ms};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of pou,minimum width=53mm,minimum height=8mm,align=left] (task) {PlcTask · cycle de 10 ms};
     \draw[flow] (root)--(plc);
     \draw[flow] (plc)--(dut);
     \draw[flow] (dut)--(pou);
-    \draw[flow] (pou)--(visu);
-    \draw[flow] (visu)--(task);
+    \draw[flow] (pou)--(task);
   \end{tikzpicture}
 
   \begin{primarycard}
     \textbf{Répartition des rôles}\par\small
-    \texttt{MAIN} instancie le bloc, relie ses entrées/sorties et prépare les indicateurs et chaînes de caractères destinés à la Visualization. La logique de cycle reste regroupée dans \texttt{FB\_Carrousel}.
+    \texttt{MAIN} instancie le bloc et relie ses entrées et sorties. La logique de cycle reste regroupée dans \texttt{FB\_Carrousel}, ce qui facilite la lecture et la réutilisation du bloc.
   \end{primarycard}
 }{
   \subsection{Fonctions présentes dans la version réalisée}
@@ -37,7 +35,6 @@
     Bac suivant déjà plein & attente de l'opérateur dans \texttt{ATTENTE\_BAC} jusqu'à la réinitialisation du bac\\
     Réinitialisation & appui bref : bac concerné ; maintien 10 s : huit compteurs\\
     Défaut & paramètres ou états invalides, commandes à \texttt{FALSE}, reprise par \texttt{INIT}\\
-    Supervision V1 & mode, état, bac actif, compteurs, vérin, cycles et commandes de simulation\\
     \bottomrule
   \end{tabularx}
 

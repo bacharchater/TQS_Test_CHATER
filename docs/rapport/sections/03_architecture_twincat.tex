@@ -39,7 +39,7 @@
     \node[draw=ekprimary!50,fill=white,rounded corners=2mm,minimum width=34mm,minimum height=14mm,align=center,right=of main] (fb) {\texttt{FB\_Carrousel}\\logique métier};
     \draw[flow] (io)--(main);
     \draw[flow] (main)--(fb);
-    \node[draw=ekline,fill=white,rounded corners=2mm,minimum width=34mm,minimum height=13mm,align=center,below=of fb] (out) {Sorties / supervision\\vérin · bac · défaut · Visu};
+    \node[draw=ekline,fill=white,rounded corners=2mm,minimum width=34mm,minimum height=13mm,align=center,below=of fb] (out) {Sorties / diagnostic\\vérin · bac · défaut};
     \draw[flow] (fb)--(out);
   \end{tikzpicture}
   \end{center}
@@ -50,8 +50,7 @@
     \item l'index \texttt{nBac} est contrôlé avant accès au tableau ;
     \item les deux sorties de commande \texttt{bVerinAv} et \texttt{bVerinAr} ne sont jamais vraies simultanément ;
     \item le changement de bac intervient après le quatrième cycle complet ;
-    \item un bac déjà plein bloque le cycle jusqu'à sa réinitialisation ;
-    \item \texttt{MAIN} expose les états, les compteurs et les indicateurs requis par la PLC Visualization V1.
+    \item un bac déjà plein bloque le cycle jusqu'à sa réinitialisation.
   \end{enumerate}
 }
 

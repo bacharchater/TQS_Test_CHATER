@@ -1,6 +1,6 @@
 % 09 - LIMITES
 % ==============================================================
-\sectionintro{10 · Périmètre maîtrisé}{Limites et évolutions possibles}{Distinguer la logique PLC et sa Visualization V1 de ce qui dépend encore de la mécanique, de la sécurité ou d'une supervision avancée.}
+\sectionintro{09 · Périmètre maîtrisé}{Limites et évolutions possibles}{Distinguer ce qui est couvert par la logique PLC de ce qui dépend encore de la mécanique, de la sécurité ou d'un système industriel complet.}
 
 \twocolpage{
   \begin{primarycard}
@@ -17,8 +17,6 @@
     \item chaîne d'arrêt d'urgence et fonctions de sécurité ;
     \item diagnostic par code défaut détaillé ;
     \item alarmes avancées, acquittements historisés et historique d'événements ;
-    \item application TwinCAT HMI V2 ou supervision web dédiée ;
-    \item édition depuis la Visualization V1 de la consigne et du temps vérin.
   \end{itemize}
 }{
   \subsection{Évolutions proposées}
@@ -31,7 +29,7 @@
     2 & mémoriser un code défaut et l'étape d'apparition pour la maintenance, puis ajouter une vue d'alarmes\\
     2 & qualifier le filtrage du laser selon la cadence et le capteur réel\\
     2 & définir la conservation ou la remise à zéro des compteurs après coupure\\
-    3 & faire évoluer la PLC Visualization V1 ou créer une TwinCAT HMI V2 avec historique et gestion des droits\\
+    3 & compléter les IHM ajoutées après l'entretien par un historique, une gestion des droits et des alarmes\\
     3 & étudier la variante motorisée avec \texttt{AXIS\_REF} et blocs PLCopen Motion\\
     \bottomrule
   \end{tabularx}
@@ -40,8 +38,8 @@
     \texttt{MC\_Power}, \texttt{MC\_MoveModulo}, \texttt{MC\_Halt} et \texttt{MC\_Stop} restent des pistes d'évolution. Aucun de ces blocs n'est présenté comme utilisé ou testé dans la version pneumatique.
   \end{notebox}
 
-  \begin{notebox}{Limite de la Visualization V1}
-    La vue actuelle supervise le cycle et permet la simulation. Elle ne fournit ni journal d'alarmes, ni historique, ni diagnostic mécanique, et ne remplace pas une interface de production sécurisée.
+  \begin{notebox}{Complément hors périmètre initial}
+    Les interfaces réalisées après l'entretien sont documentées séparément en \hyperref[annexe:ihm]{Annexe B}. Elles ne sont pas présentées comme une exigence du sujet initial.
   \end{notebox}
 }
 

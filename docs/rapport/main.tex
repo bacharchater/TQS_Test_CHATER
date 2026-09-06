@@ -2,7 +2,7 @@
 
 % ==============================================================
 % Rapport technique TQS - Chater Bach-char
-% Version 2.1 : synchronisation avec les sources PLC et la Visualization V1
+% Version 2.2 : rapport PLC et annexe IHM hors perimetre initial
 % Direction artistique inspiree du design system Ekloraa / PROJ4
 % Compilation : pdflatex (trois passes)
 % ==============================================================
@@ -58,8 +58,8 @@
   citecolor=ekprimary,
   pdftitle={Pilotage d'un carrousel de conditionnement - conception et validation sous TwinCAT 3},
   pdfauthor={Chater Bach-char},
-  pdfsubject={Rapport synchronise avec les sources PLC et la PLC Visualization V1},
-  pdfkeywords={TQS, TwinCAT 3, Structured Text, machine d'etats, automatisme, PLC Visualization, carrousel}
+  pdfsubject={Rapport technique PLC avec annexe consacree aux IHM realisees apres l'entretien},
+  pdfkeywords={TQS, TwinCAT 3, Structured Text, machine d'etats, automatisme, PLC Visualization, TwinCAT HMI, carrousel}
 }
 
 % ---------- Base typographique ----------
@@ -100,7 +100,7 @@
 \fancyhf{}
 \newcommand{\headerlower}[1]{\raisebox{-5pt}[0pt][0pt]{#1}}
 \fancyhead[L]{\headerlower{\footnotesize\bfseries\color{ekprimarydark}CHATER BACH-CHAR}}
-\fancyhead[C]{\headerlower{\footnotesize\color{ekmuted}Automatisme \& PLC Visualization V1 · Carrousel}}
+\fancyhead[C]{\headerlower{\footnotesize\color{ekmuted}Conception \& validation · Carrousel de conditionnement}}
 \fancyhead[R]{\headerlower{\footnotesize\color{ekmuted}TQS · 06.09.2026}}
 \fancyfoot[L]{\scriptsize\color{ekmuted}Projet TwinCAT 3 - retour après entretien}
 \fancyfoot[R]{\scriptsize\color{ekmuted}\thepage\ / \pageref{LastPage}}
@@ -241,11 +241,11 @@
 \input{sections/04_sequencement}
 \input{sections/05_structured_text}
 \input{sections/06_robustesse}
-\input{sections/07_visualization}
 \input{sections/07_essais_twincat}
 \input{sections/08_retour_essais}
 \input{sections/09_limites_evolutions}
 \input{sections/10_conclusion}
 \input{sections/annexe_a_types_interface}
+\input{sections/annexe_b_ihm}
 
 \end{document}
