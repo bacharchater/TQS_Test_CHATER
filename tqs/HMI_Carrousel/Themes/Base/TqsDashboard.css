@@ -1,0 +1,1252 @@
+/* ================================================================
+   TQS — CARROUSEL DE CONDITIONNEMENT
+   HMI V2 — Design System Ékloraa
+   TwinCAT HMI TE2000
+   ================================================================ */
+
+
+/* ================================================================
+   1. DESIGN TOKENS
+   ================================================================ */
+
+.tqs-dashboard {
+    /* ---------- DA Ékloraa ---------- */
+
+    --ecl-forest: #064E3B;
+    --ecl-forest-2: #0A614B;
+    --ecl-forest-soft: #EAF4F0;
+    --ecl-ink: #17241F;
+    --ecl-gray: #6B7570;
+    --ecl-gray-light: #9AA39F;
+    --ecl-gold: #C9A253;
+    --ecl-gold-soft: #FBF3E3;
+    --ecl-champ: #F8E7C9;
+    /* ---------- États ---------- */
+
+    --state-normal: #FFFFFF;
+    --state-active: var(--ecl-forest);
+    --state-active-soft: #E9F5F0;
+    --state-full: var(--ecl-gold);
+    --state-full-soft: #FBF4E5;
+    --state-fault: #C73E3E;
+    --state-fault-soft: #FCEDED;
+    --state-init: #56736A;
+    --state-init-soft: #EDF2F0;
+    /* ---------- Surfaces ---------- */
+
+    --surface-page: #F5F7F5;
+    --surface-card: #FFFFFF;
+    --surface-inset: #F8FAF8;
+    --border: #E2E8E4;
+    --border-soft: #EDF1EE;
+    /* ---------- Typographie ---------- */
+
+    --text-main: var(--ecl-ink);
+    --text-secondary: var(--ecl-gray);
+    --text-muted: #929C97;
+    /* ---------- Effets ---------- */
+
+    --shadow-card: 0 1px 2px rgba(23, 36, 31, 0.025), 0 4px 14px rgba(23, 36, 31, 0.035);
+    --shadow-active: 0 5px 18px rgba(6, 78, 59, 0.13);
+    --radius-card: 14px;
+    --radius-small: 9px;
+    /* ---------- Layout ---------- */
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: clamp(10px, 1.7vw, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.1vw, 14px);
+    overflow: auto;
+    background: var(--surface-page);
+    color: var(--text-main);
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+    .tqs-dashboard *,
+    .tqs-dashboard *::before,
+    .tqs-dashboard *::after {
+        box-sizing: border-box;
+    }
+
+
+/* ================================================================
+   2. HEADER
+   ================================================================ */
+
+.tqs-header {
+    height: 50px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.tqs-header__title {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--text-main);
+}
+
+
+.tqs-header__subtitle {
+    margin: 4px 0 0;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+
+
+/* ================================================================
+   3. BADGE MODE
+   ================================================================ */
+
+.tqs-mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 38px;
+    padding: 8px 15px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-card);
+    font-size: 13px;
+    font-weight: 650;
+    box-shadow: var(--shadow-card);
+}
+
+
+.tqs-mode__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--text-muted);
+}
+
+
+.tqs-mode__label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+}
+
+
+.tqs-mode__value {
+    font-weight: 750;
+}
+
+
+/* ---------- AUTO ---------- */
+
+.tqs-mode--auto {
+    background: var(--state-active-soft);
+    border-color: #B9D9CD;
+    color: var(--ecl-forest);
+}
+
+
+    .tqs-mode--auto .tqs-mode__dot {
+        background: var(--ecl-forest);
+        box-shadow: 0 0 0 4px rgba(6, 78, 59, 0.10);
+    }
+
+
+/* ---------- INIT ---------- */
+
+.tqs-mode--init {
+    background: var(--state-init-soft);
+    border-color: #CEDAD5;
+    color: var(--state-init);
+}
+
+
+    .tqs-mode--init .tqs-mode__dot {
+        background: var(--state-init);
+    }
+
+
+/* ---------- DEFAUT ---------- */
+
+.tqs-mode--fault {
+    background: var(--state-fault-soft);
+    border-color: #EDC2C2;
+    color: var(--state-fault);
+}
+
+
+    .tqs-mode--fault .tqs-mode__dot {
+        background: var(--state-fault);
+        box-shadow: 0 0 0 4px rgba(199, 62, 62, 0.11);
+    }
+
+
+/* ================================================================
+   4. CARTES
+   ================================================================ */
+
+.tqs-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+}
+
+
+.tqs-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 0;
+}
+
+
+.tqs-card__title {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 1.25px;
+    color: var(--text-muted);
+}
+
+
+.tqs-card__tag {
+    padding: 4px 10px;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    background: var(--surface-inset);
+    font-size: 10.5px;
+    color: var(--text-secondary);
+}
+
+
+/* ================================================================
+   5. KPI
+   ================================================================ */
+
+.tqs-kpis {
+    flex: none;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr) minmax(0, 0.9fr);
+    gap: clamp(8px, 1vw, 14px);
+}
+
+
+.tqs-kpi {
+    min-height: 92px;
+    padding: 13px 18px;
+}
+
+
+.tqs-kpi__label {
+    font-size: 10.5px;
+    font-weight: 750;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+
+.tqs-kpi__value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 25px;
+    line-height: 1.1;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+
+.tqs-kpi__value--state {
+    font-size: 22px;
+    color: var(--ecl-forest);
+}
+
+
+.tqs-kpi__value--big {
+    font-size: 29px;
+}
+
+
+.tqs-kpi__unit {
+    font-size: 13px;
+    font-weight: 550;
+    color: var(--text-muted);
+}
+
+
+.tqs-kpi__hint {
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+
+/* ================================================================
+   6. ZONE PRINCIPALE
+   ================================================================ */
+
+.tqs-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 24vw, 320px);
+    gap: clamp(8px, 1vw, 14px);
+}
+
+
+/* ================================================================
+   7. CARROUSEL
+   ================================================================ */
+
+.tqs-carousel-card {
+    min-width: 0;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+
+.tqs-carousel {
+    position: relative;
+    /* Ne pas étirer verticalement le carrousel */
+    flex: 0 0 auto;
+    width: min(100%, 58vh, 560px);
+    aspect-ratio: 1 / 1;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    margin: auto;
+}
+
+
+/* ---------- Anneau ---------- */
+
+.tqs-carousel__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 86%;
+    height: 86%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+
+.tqs-carousel__ring-track {
+    fill: none;
+    stroke: #DEE6E1;
+    stroke-width: 2;
+}
+
+
+.tqs-carousel__ring-dash {
+    fill: none;
+    stroke: var(--ecl-gold);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 55 1315;
+    transform-origin: 280px 280px;
+    opacity: 0.95;
+
+}
+.tqs-carousel__ring-dash--moving {
+    animation: tqs-ring-rotate 900ms ease-in-out infinite;
+}
+
+@keyframes tqs-ring-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ---------- Bras ---------- */
+
+.tqs-carousel__spokes line {
+    stroke: #E5EBE7;
+    stroke-width: 1.6;
+    stroke-dasharray: 3 7;
+}
+
+
+/* ---------- Centre ---------- */
+
+.tqs-carousel__center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(92px, 24%, 132px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--ecl-ink);
+    color: #FFFFFF;
+    border: 4px solid rgba(201, 162, 83, 0.22);
+    box-shadow: 0 8px 22px rgba(23, 36, 31, 0.16);
+}
+
+
+    .tqs-carousel__center::after {
+        content: "";
+        position: absolute;
+        bottom: 16%;
+        width: 26%;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--ecl-gold);
+    }
+
+
+.tqs-carousel__center-label {
+    font-size: clamp(7px, 1vw, 9px);
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #B9C3BE;
+}
+
+
+.tqs-carousel__center-value {
+    margin-top: 3px;
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 750;
+    line-height: 1;
+}
+
+
+/* ================================================================
+   8. BACS
+   ================================================================ */
+
+.tqs-bac {
+    position: absolute;
+    width: clamp(72px, 22%, 122px);
+    padding: clamp(6px, 0.8vw, 9px) clamp(7px, 0.9vw, 11px) clamp(7px, 0.9vw, 10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-card);
+    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+
+/* ============================================================
+   POSITION DES 8 BACS SUR LE CARROUSEL
+
+   Toutes les cartes sont positionnées par leur centre.
+   Cela permet à binsLayer de tourner correctement.
+   ============================================================ */
+
+/* ============================================================
+   POSITIONS DES 8 POSTES
+   ============================================================ */
+
+.tqs-bac--pos1 {
+    left: 50%;
+    top: 11%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos2 {
+    left: 77.5%;
+    top: 22.5%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos3 {
+    left: 89%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos4 {
+    left: 77.5%;
+    top: 77.5%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos5 {
+    left: 50%;
+    top: 89%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos6 {
+    left: 22.5%;
+    top: 77.5%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos7 {
+    left: 11%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tqs-bac--pos8 {
+    left: 22.5%;
+    top: 22.5%;
+    transform: translate(-50%, -50%);
+}
+/* ---------- Entête bac ---------- */
+
+.tqs-bac__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+
+.tqs-bac__name {
+    font-size: clamp(8px, 0.9vw, 10px);
+    font-weight: 750;
+    letter-spacing: 0.9px;
+    color: var(--text-secondary);
+}
+
+
+.tqs-bac__chip {
+    display: none;
+    padding: 2px 6px;
+    border-radius: 999px;
+    font-size: 8px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+
+.tqs-bac__count {
+    margin-top: 4px;
+    font-size: clamp(15px, 1.6vw, 19px);
+    line-height: 1;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+
+.tqs-bac__max {
+    font-size: clamp(9px, 1vw, 11px);
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+
+/* ---------- Barre ---------- */
+
+.tqs-bac__bar {
+    height: 4px;
+    margin-top: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #E9EEEB;
+}
+
+
+.tqs-bac__bar-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: #A9B6B0;
+    transition: width 250ms ease, background 180ms ease;
+}
+
+
+/* ---------- ACTIF ---------- */
+
+    .tqs-bac--active {
+        background: var(--state-active-soft);
+        border-color: var(--ecl-forest);
+        box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.07), var(--shadow-active);
+    }
+
+
+    .tqs-bac--active .tqs-bac__name {
+        color: var(--ecl-forest);
+    }
+
+
+    .tqs-bac--active .tqs-bac__chip {
+        display: inline-block;
+        background: var(--ecl-forest);
+        color: #FFFFFF;
+    }
+
+
+    .tqs-bac--active .tqs-bac__bar-fill {
+        background: var(--ecl-forest);
+    }
+
+
+/* ---------- PLEIN ---------- */
+
+    .tqs-bac--full {
+        background: var(--state-full-soft);
+        border-color: var(--ecl-gold);
+    }
+
+
+    .tqs-bac--full .tqs-bac__name {
+        color: #8A6929;
+    }
+
+
+    .tqs-bac--full .tqs-bac__chip {
+        display: inline-block;
+        background: var(--ecl-gold);
+        color: #FFFFFF;
+    }
+
+
+    .tqs-bac--full .tqs-bac__bar-fill {
+        background: var(--ecl-gold);
+    }
+
+
+/* ---------- DEFAUT ---------- */
+
+.tqs-bac--fault {
+    background: var(--state-fault-soft);
+    border-color: var(--state-fault);
+}
+
+
+    .tqs-bac--fault .tqs-bac__name {
+        color: var(--state-fault);
+    }
+
+
+    .tqs-bac--fault .tqs-bac__chip {
+        display: inline-block;
+        background: var(--state-fault);
+        color: #FFFFFF;
+    }
+
+
+    .tqs-bac--fault .tqs-bac__bar-fill {
+        background: var(--state-fault);
+    }
+
+
+/* ================================================================
+   9. LÉGENDE
+   ================================================================ */
+
+.tqs-legend {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 0 18px 12px;
+}
+
+
+.tqs-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+}
+
+
+.tqs-legend__swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+}
+
+
+.tqs-legend__swatch--active {
+    background: var(--state-active-soft);
+    border-color: var(--ecl-forest);
+}
+
+
+.tqs-legend__swatch--full {
+    background: var(--state-full-soft);
+    border-color: var(--ecl-gold);
+}
+
+
+.tqs-legend__swatch--fault {
+    background: var(--state-fault-soft);
+    border-color: var(--state-fault);
+}
+
+
+/* ================================================================
+   10. COLONNE DROITE
+   ================================================================ */
+
+.tqs-side {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+
+/* ================================================================
+   11. ÉTAT MACHINE
+   ================================================================ */
+
+.tqs-status-panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 7px;
+}
+
+
+.tqs-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 43px;
+    margin: 0 17px;
+    padding: 8px 1px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+
+.tqs-status-row--last {
+    border-bottom: none;
+}
+
+
+.tqs-status-row__label {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+
+
+.tqs-status-row__state {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.tqs-status-row__value {
+    min-width: 42px;
+    text-align: right;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+
+.tqs-status-row__value--accent {
+    color: var(--ecl-forest);
+}
+
+
+.tqs-status-panel__divider {
+    margin: 3px 17px;
+    border-top: 1px dashed #D7DFDA;
+}
+
+
+/* ================================================================
+   12. LEDs
+   ================================================================ */
+
+.tqs-led {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: #CAD2CE;
+    transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+
+.tqs-led--off {
+    background: #C8D0CC;
+}
+
+
+.tqs-led--green {
+    background: var(--ecl-forest);
+    box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.10);
+}
+
+
+.tqs-led--orange {
+    background: var(--ecl-gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 83, 0.14);
+}
+
+
+.tqs-led--red {
+    background: var(--state-fault);
+    box-shadow: 0 0 0 3px rgba(199, 62, 62, 0.11);
+}
+
+
+.tqs-led--pulse {
+    animation: tqs-led-pulse 1.8s ease-in-out infinite;
+}
+
+
+@keyframes tqs-led-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.10);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(6, 78, 59, 0.035);
+    }
+}
+
+
+/* ================================================================
+   13. CYCLE VÉRIN
+   ================================================================ */
+
+.tqs-verin-steps {
+    display: inline-flex;
+    gap: 4px;
+}
+
+
+    .tqs-verin-steps i {
+        width: 13px;
+        height: 5px;
+        border-radius: 999px;
+        background: #E4EAE6;
+        transition: background 160ms ease;
+    }
+
+
+        .tqs-verin-steps i.on {
+            background: var(--ecl-gold);
+        }
+
+
+/* ================================================================
+   14. COMMANDES OPÉRATEUR
+   ================================================================ */
+
+.tqs-cmds {
+    flex: none;
+}
+
+
+.tqs-cmds__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 13px 17px 6px;
+}
+
+
+.tqs-btn {
+    appearance: none;
+    width: 100%;
+    min-height: 35px;
+    padding: 8px 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    background: #FFFFFF;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease, transform 80ms ease;
+}
+
+
+    .tqs-btn:hover {
+        background: var(--surface-inset);
+        border-color: #C8D2CC;
+        color: var(--text-main);
+    }
+
+
+    .tqs-btn:active {
+        transform: translateY(1px);
+    }
+
+
+.tqs-btn--primary {
+    border-color: var(--ecl-forest);
+    background: var(--ecl-forest);
+    color: #FFFFFF;
+}
+
+
+    .tqs-btn--primary:hover {
+        border-color: var(--ecl-forest-2);
+        background: var(--ecl-forest-2);
+        color: #FFFFFF;
+    }
+
+
+.tqs-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    transform: none;
+}
+
+
+.tqs-cmds__note {
+    margin: 0;
+    padding: 5px 17px 11px;
+    font-size: 9.5px;
+    line-height: 1.4;
+    color: var(--text-muted);
+}
+
+
+/* ================================================================
+   15. SIGNATURE
+   ================================================================ */
+
+.tqs-signature {
+    position: absolute;
+    right: 25px;
+    bottom: 6px;
+    font-size: 8px;
+    letter-spacing: 0.7px;
+    color: #ADB5B1;
+    pointer-events: none;
+}
+
+
+/* ================================================================
+   16. RESPONSIVE — ÉCRAN INTERMÉDIAIRE
+   ================================================================ */
+
+@media (max-width: 1050px) {
+
+    .tqs-main {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
+
+
+    .tqs-carousel {
+        width: min(100%, 54vh, 480px);
+    }
+
+
+    .tqs-bac {
+        width: clamp(82px, 10vw, 108px);
+    }
+
+
+    .tqs-kpi__value {
+        font-size: 22px;
+    }
+
+
+    .tqs-kpi__value--state {
+        font-size: 19px;
+    }
+}
+
+
+/* ================================================================
+   17. RESPONSIVE — TABLETTE / PETITE FENÊTRE
+   ================================================================ */
+
+@media (max-width: 900px) {
+
+    .tqs-dashboard {
+        overflow: auto;
+    }
+
+
+    .tqs-header {
+        height: auto;
+    }
+
+
+    .tqs-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .tqs-kpis .tqs-kpi:last-child {
+        grid-column: 1 / -1;
+    }
+
+
+    .tqs-main {
+        grid-template-columns: 1fr;
+    }
+
+
+    .tqs-carousel-card {
+        min-height: 540px;
+    }
+
+
+    .tqs-carousel {
+        width: min(92vw, 500px);
+    }
+
+    /* ============================================================
+   COUCHE ROTATIVE DES 8 BACS
+   ============================================================ */
+
+    .tqs-carousel__bins-layer {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+    }
+
+    .tqs-side {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+
+    .tqs-status-panel,
+    .tqs-cmds {
+        min-width: 0;
+    }
+
+
+    .tqs-signature {
+        position: static;
+        align-self: flex-end;
+        padding-top: 4px;
+    }
+}
+
+
+/* ================================================================
+   18. RESPONSIVE — TRÈS PETITE FENÊTRE
+   ================================================================ */
+
+@media (max-width: 600px) {
+
+    .tqs-dashboard {
+        padding: 10px;
+    }
+
+
+    .tqs-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+
+    .tqs-mode {
+        align-self: flex-start;
+    }
+
+
+    .tqs-kpis {
+        grid-template-columns: 1fr;
+    }
+
+
+        .tqs-kpis .tqs-kpi:last-child {
+            grid-column: auto;
+        }
+
+
+    .tqs-main {
+        grid-template-columns: 1fr;
+    }
+
+
+    .tqs-side {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .tqs-carousel-card {
+        min-height: 460px;
+    }
+
+
+    .tqs-carousel {
+        width: min(94vw, 420px);
+    }
+
+
+    .tqs-bac {
+        width: 82px;
+        padding: 6px 7px;
+    }
+
+
+    .tqs-bac__count {
+        font-size: 15px;
+    }
+
+
+    .tqs-bac__name {
+        font-size: 9px;
+    }
+
+
+    .tqs-bac__chip {
+        font-size: 7px;
+        padding: 2px 4px;
+    }
+
+
+    .tqs-carousel__center {
+        width: 96px;
+    }
+
+    .tqs-carousel__center {
+        z-index: 4;
+    }
+    .tqs-carousel__center-value {
+        font-size: 30px;
+    }
+
+
+    .tqs-status-row {
+        margin: 0 12px;
+    }
+}
+
+
+/* ================================================================
+   19. TRÈS PETITE LARGEUR
+   ================================================================ */
+
+@media (max-width: 430px) {
+
+    .tqs-carousel-card {
+        min-height: 400px;
+    }
+
+
+    .tqs-carousel {
+        width: min(96vw, 360px);
+    }
+
+
+    .tqs-bac {
+        width: 70px;
+        padding: 5px 6px;
+    }
+
+
+    .tqs-bac__chip {
+        display: none;
+    }
+
+
+    .tqs-bac__count {
+        font-size: 13px;
+    }
+
+
+    .tqs-bac__name {
+        font-size: 8px;
+    }
+
+
+    .tqs-bac__max {
+        font-size: 8px;
+    }
+
+
+    .tqs-carousel__center {
+        width: 82px;
+    }
+
+
+    .tqs-carousel__center-label {
+        font-size: 6px;
+    }
+
+
+    .tqs-carousel__center-value {
+        font-size: 26px;
+    }
+}
+
+
+/* ================================================================
+   20. ACCESSIBILITÉ
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .tqs-carousel__ring-dash,
+    .tqs-led--pulse {
+        animation: none;
+    }
+}
+/* ================================================================
+   21. RESPONSIVE — FAIBLE HAUTEUR / ZOOM NAVIGATEUR
+
+   Quand le zoom réduit la hauteur disponible,
+   l'IHM conserve ses proportions et utilise le défilement
+   au lieu d'écraser les composants.
+   ================================================================ */
+
+@media (max-height: 720px) {
+
+    .tqs-dashboard {
+        height: auto;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
+    .tqs-main {
+        flex: none;
+        min-height: auto;
+        align-items: start;
+    }
+
+
+    .tqs-carousel-card {
+        min-height: 500px;
+    }
+
+
+    .tqs-status-panel {
+        flex: none;
+        min-height: 315px;
+    }
+
+
+    .tqs-side {
+        align-self: start;
+    }
+}
