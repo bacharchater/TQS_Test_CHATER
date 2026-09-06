@@ -1,0 +1,61 @@
+% 04 - MACHINE D'ETATS
+% ==============================================================
+\sectionintro{04 · Séquencement}{Machine d'états du cycle AUTO}{La représentation reprend les états et les transitions réellement présents dans le bloc fonctionnel.}
+
+\twocolpage{
+  \begin{center}
+  \begin{tikzpicture}[
+    node distance=8mm,
+    state/.style={draw=ekprimarydark,very thick,fill=white,rounded corners=1mm,
+      minimum width=38mm,minimum height=8mm,font=\bfseries\scriptsize,
+      text=ekprimarydark,align=center}
+  ]
+    \node[state,double,double distance=1.2pt,fill=eksoft] (a0) {A0 · ATTENTE};
+    \node[state,below=of a0,fill=eksoft] (a1) {A1 · COMPTAGE};
+    \node[state,below=of a1] (a2) {A2 · BAC\_PLEIN};
+    \node[state,below=of a2] (a3) {A3 · VERIN\_SORTIE};
+    \node[state,below=of a3] (a4) {A4 · VERIN\_RENTREE};
+    \node[state,below=of a4] (a5) {A5 · BAC\_SUIVANT};
+    \node[state,below=of a5,fill=ekwarning] (a6) {A6 · ATTENTE\_BAC};
+    \draw[flow] (a0)--(a1);
+    \draw[flow] (a1)--(a2);
+    \draw[flow] (a2)--(a3);
+    \draw[flow] (a3)--(a4);
+    \draw[flow] (a4)--(a5);
+    \draw[flow] (a5)--node[right,font=\scriptsize,text=ekmuted] {bac plein}(a6);
+    \draw[flow] (a4.west)--++(-8mm,0)|-(a3.west);
+    \draw[flow] (a5.west)--++(-13mm,0)|-(a1.west);
+    \draw[flow] (a6.east)--++(7mm,0)|-(a1.east);
+  \end{tikzpicture}
+  \end{center}
+}{
+  \subsection{Transitions principales}
+  \begin{tabularx}{\linewidth}{@{}L{24mm}Y@{}}
+    \toprule
+    \textbf{Transition} & \textbf{Condition}\\
+    \midrule
+    A0 → A1 & entrée dans le mode \texttt{AUTO}\\
+    A1 → A2 & \texttt{aPieceBac[nBac] >= nPieceBac}\\
+    A2 → A3 & transition immédiate\\
+    A3 → A4 & temporisation de sortie écoulée\\
+    A4 → A3 & temporisation de rentrée écoulée et \texttt{nImp < 4}\\
+    A4 → A5 & temporisation écoulée et \texttt{nImp >= 4}\\
+    A5 → A1 & nouveau bac sous la consigne\\
+    A5 → A6 & nouveau bac déjà plein\\
+    A6 → A1 & \texttt{aResetBac[nBac] = TRUE}\\
+    \bottomrule
+  \end{tabularx}
+
+  \begin{primarycard}
+    \textbf{Lecture du cycle vérin}\par\small
+    Une unité de \texttt{nImp} correspond à une sortie suivie d'une rentrée. Le plateau ne passe au bac suivant qu'après quatre cycles complets.
+  \end{primarycard}
+
+  \begin{notebox}[colback=ekwarning,colframe=orange!35]{Référencement}
+    \texttt{INIT} exploite le capteur inductif comme référence. La stratégie mécanique de recherche du zéro n'étant pas définie, la version réalisée considère \texttt{bZero = TRUE} comme condition de validation du référencement.
+  \end{notebox}
+}
+
+\newpage
+
+% ==============================================================

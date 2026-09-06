@@ -1,0 +1,44 @@
+% 09 - LIMITES
+% ==============================================================
+\sectionintro{09 · Périmètre maîtrisé}{Limites et évolutions possibles}{Distinguer ce qui est validé de ce qui dépend encore de la mécanique, de la sécurité machine ou d'un axe réel.}
+
+\twocolpage{
+  \begin{primarycard}
+    \textbf{Choix sur le point zéro}\par\small
+    L'initialisation attend \texttt{bZero}. Lorsque la référence zéro est détectée par le capteur, \texttt{nBac} prend la valeur 1 et le programme passe en \texttt{AUTO}. Aucune recherche mécanique du zéro n'est inventée, car son mouvement n'est pas défini dans le sujet.
+  \end{primarycard}
+
+  \subsection{Non implémenté dans cette version}
+  \begin{itemize}\small
+    \item séquence mécanique complète de prise d'origine ;
+    \item fins de course du vérin ;
+    \item contrôle réel de position du plateau ;
+    \item temporisation de surveillance mécanique indépendante ;
+    \item chaîne d'arrêt d'urgence et fonctions de sécurité ;
+    \item diagnostic par code défaut détaillé ;
+    \item interface HMI.
+  \end{itemize}
+}{
+  \subsection{Évolutions proposées}
+  \begin{tabularx}{\linewidth}{@{}L{17mm}Y@{}}
+    \toprule
+    \textbf{Priorité} & \textbf{Évolution}\\
+    \midrule
+    1 & ajouter les capteurs de fin de course et séparer durée de commande et temporisation de surveillance\\
+    1 & intégrer une autorisation issue de la chaîne de sécurité et définir le comportement à la perte d'énergie\\
+    2 & mémoriser un code défaut et l'étape d'apparition pour la maintenance\\
+    2 & qualifier le filtrage du laser selon la cadence et le capteur réel\\
+    2 & définir la conservation ou la remise à zéro des compteurs après coupure\\
+    3 & ajouter une HMI simple : bac actif, compteurs, mode et cause de défaut\\
+    3 & étudier la variante motorisée avec \texttt{AXIS\_REF} et blocs PLCopen Motion\\
+    \bottomrule
+  \end{tabularx}
+
+  \begin{notebox}[colback=ekinfo,colframe=blue!25]{Variante motorisée}
+    \texttt{MC\_Power}, \texttt{MC\_MoveModulo}, \texttt{MC\_Halt} et \texttt{MC\_Stop} restent des pistes d'évolution. Aucun de ces blocs n'est présenté comme utilisé ou testé dans la version pneumatique.
+  \end{notebox}
+}
+
+\newpage
+
+% ==============================================================

@@ -1,0 +1,36 @@
+% 07 - VALIDATION
+% ==============================================================
+\sectionintro{07 · Essais TwinCAT}{Validation fonctionnelle}{La version finale a été compilée dans XAE, téléchargée sur le runtime local et validée en ligne.}
+
+\begin{center}
+  \begin{minipage}[t]{.31\linewidth}\metric{0}{erreur au Rebuild}\end{minipage}\hfill
+  \begin{minipage}[t]{.31\linewidth}\metric{11}{scénarios rejoués}\end{minipage}\hfill
+  \begin{minipage}[t]{.31\linewidth}\metric{3}{cas limites corrigés}\end{minipage}
+\end{center}
+
+\vspace{2mm}
+\begin{tabularx}{\linewidth}{@{}L{43mm}Y L{25mm}@{}}
+  \toprule
+  \textbf{Essai} & \textbf{Résultat observé} & \textbf{Statut}\\
+  \midrule
+  Détection du point zéro & \texttt{INIT → nBac = 1 → AUTO} & \ok\\
+  Front du capteur laser & une seule incrémentation pour \texttt{FALSE → TRUE → FALSE} & \ok\\
+  Consigne atteinte & passage de \texttt{COMPTAGE} à \texttt{BAC\_PLEIN} & \ok\\
+  Quatre cycles du vérin & alternance sortie / rentrée sans défaut intempestif, puis \texttt{BAC\_SUIVANT} & \ok\\
+  Retour 8 vers 1 & bouclage logique correct & \ok\\
+  Bac suivant déjà plein & maintien dans \texttt{ATTENTE\_BAC} & \ok\\
+  Réinitialisation individuelle & seul le compteur visé passe à zéro & \ok\\
+  Appui maintenu 10 s & remise à zéro des huit compteurs & \ok\\
+  \texttt{nPieceBac = 0} & passage en \texttt{DEFAUT}, commandes neutralisées & \ok\\
+  \texttt{tVerin = T\#0MS} & passage en \texttt{DEFAUT}, commandes neutralisées & \ok\\
+  Acquittement après correction & appui 10 s, retour \texttt{INIT}, puis \texttt{AUTO} au zéro & \ok\\
+  \bottomrule
+\end{tabularx}
+
+\begin{notebox}[colback=ekinfo,colframe=blue!25]{Version finale validée}
+  Le fichier \texttt{FB\_Carrousel.st} joint reprend le code de la version finale compilée et testée sous TwinCAT. Les scénarios de contrôle ont été rejoués après intégration des dernières corrections.
+\end{notebox}
+
+\newpage
+
+% ==============================================================

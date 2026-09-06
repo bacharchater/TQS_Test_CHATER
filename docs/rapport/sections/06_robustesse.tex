@@ -1,0 +1,65 @@
+% 06 - REINITIALISATIONS ET DEFAUTS
+% ==============================================================
+\sectionintro{06 · Robustesse}{Réinitialisations et gestion des défauts}{Les commandes sont neutralisées avant toute reprise ; l'appui long sert également d'acquittement.}
+
+\noindent
+\begin{minipage}[t]{0.355\textwidth}\vspace{0pt}
+  \subsection{Réinitialisations}
+\begin{lstlisting}[style=stcode]
+bResetGlobal := FALSE;
+
+FOR i := 1 TO 8 DO
+    IF aResetBac[i] THEN
+        aPieceBac[i] := 0; // reset bac
+    END_IF
+
+    aTempoReset[i](
+        IN := aResetBac[i],
+        PT := T#10S);
+
+    IF aTempoReset[i].Q THEN
+        bResetGlobal := TRUE;
+    END_IF
+END_FOR
+\end{lstlisting}
+
+  \begin{primarycard}
+    \textbf{Effet de l'appui long}\par\small
+    Le maintien pendant 10 s de l'un des huit boutons remet à zéro les huit compteurs, les deux commandes et \texttt{nImp}. Le défaut est acquitté, le temporisateur du vérin est réinitialisé et le mode repasse à \texttt{INIT}.
+  \end{primarycard}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
+  \subsection{Conditions de défaut présentes}
+  \begin{tabularx}{\linewidth}{@{}L{37mm}Y@{}}
+    \toprule
+    \textbf{Condition} & \textbf{Réaction}\\
+    \midrule
+    \texttt{nPieceBac <= 0} & défaut immédiat, temporisateur arrêté et commandes neutralisées\\
+    \texttt{tVerin <= T\#0MS} & défaut immédiat, temporisateur arrêté et commandes neutralisées\\
+    \texttt{nBac} hors de l'intervalle 1 à 8 & blocage avant accès au tableau et passage en \texttt{DEFAUT}\\
+    état cycle incohérent & commandes à \texttt{FALSE} et défaut immédiat\\
+    mode incohérent & passage contrôlé en \texttt{DEFAUT}\\
+    mode \texttt{DEFAUT} & commandes à \texttt{FALSE}, temporisateur réinitialisé\\
+    appui de 10 s sur un bouton & remise à zéro globale, acquittement et retour par \texttt{INIT}\\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{3mm}
+  \begin{center}
+  \begin{tikzpicture}[node distance=9mm,font=\scriptsize]
+    \node[draw=ekteacher!35,fill=ekfault,rounded corners=2mm,minimum width=28mm,minimum height=12mm,align=center,text=ekteacher] (d) {DEFAUT\\commandes à \texttt{FALSE}};
+    \node[draw=ekline,fill=white,rounded corners=2mm,minimum width=32mm,minimum height=12mm,align=center,right=of d] (c) {cause corrigée\\appui 10 s};
+    \node[draw=ekprimary!40,fill=eksoft,rounded corners=2mm,minimum width=28mm,minimum height=12mm,align=center,right=of c] (i) {INIT\\attente zéro};
+    \draw[flow] (d)--(c);
+    \draw[flow] (c)--(i);
+  \end{tikzpicture}
+  \end{center}
+
+  \begin{notebox}[colback=ekinfo,colframe=blue!25]{Portée réelle}
+    Cette version gère des incohérences logicielles et de paramétrage. Elle ne réalise pas encore de diagnostic mécanique détaillé ni de fonction de sécurité machine.
+  \end{notebox}
+\end{minipage}
+
+\newpage
+
+% ==============================================================

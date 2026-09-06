@@ -1,0 +1,66 @@
+% COUVERTURE
+% ==============================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[ekprimarydark] (current page.north west)
+    rectangle ([xshift=.455\paperwidth]current page.south west);
+  \fill[ekpaper] ([xshift=.455\paperwidth]current page.north west)
+    rectangle (current page.south east);
+
+  \draw[white!25,line width=2.2pt,rounded corners=8pt]
+    ([xshift=16mm,yshift=30mm]current page.south west) -- ++(35mm,0)
+    .. controls +(17mm,0) and +(-16mm,-14mm) .. ++(42mm,27mm);
+  \draw[white!25,line width=2.2pt,rounded corners=8pt]
+    ([xshift=51mm,yshift=30mm]current page.south west)
+    .. controls +(16mm,0) and +(-13mm,0) .. ++(40mm,0);
+  \fill[white] ([xshift=51mm,yshift=30mm]current page.south west) circle (2.1mm);
+  \draw[white,line width=1.4pt] ([xshift=91mm,yshift=57mm]current page.south west) circle (2.6mm);
+  \draw[white,line width=1.4pt] ([xshift=91mm,yshift=30mm]current page.south west) circle (2.6mm);
+
+  \node[anchor=north west,text=white,font=\bfseries\scriptsize]
+    at ([xshift=17mm,yshift=-18mm]current page.north west) {CONCEPTION ET VALIDATION};
+  \node[anchor=north west,text=white,font=\fontsize{27}{29}\selectfont\bfseries,
+    align=left,text width=72mm]
+    at ([xshift=17mm,yshift=-43mm]current page.north west)
+    {Pilotage d'un\\carrousel de\\conditionnement};
+  \node[anchor=north west,text=white!70,font=\fontsize{11}{14}\selectfont,
+    align=left,text width=68mm]
+    at ([xshift=17mm,yshift=-119mm]current page.north west)
+    {De la première logique\\de séquencement à une logique\\TwinCAT structurée et testée.};
+  \node[anchor=south west,text=white,font=\bfseries\large]
+    at ([xshift=17mm,yshift=74mm]current page.south west) {Chater Bach-char};
+  \node[anchor=south west,text=white!68,font=\small]
+    at ([xshift=17mm,yshift=64mm]current page.south west)
+    {Ingénieur systèmes numériques \& instrumentation};
+  \node[anchor=south west,text=white!68,font=\small]
+    at ([xshift=17mm,yshift=56mm]current page.south west)
+    {Automaticien / développeur PLC};
+
+  \node[anchor=north west,text=ekprimary,font=\bfseries\scriptsize]
+    at ([xshift=112mm,yshift=-25mm]current page.north west) {PROJET TWINCAT 3};
+  \node[anchor=north west,text=ekink,font=\fontsize{18}{21}\selectfont\bfseries,
+    align=left,text width=78mm]
+    at ([xshift=112mm,yshift=-38mm]current page.north west)
+    {Architecture en modes,\\cycle automatique et\\validation par essais.};
+
+  \node[anchor=north west,draw=ekline,fill=white,rounded corners=4mm,
+    inner sep=6mm,text width=70mm,align=left]
+    at ([xshift=112mm,yshift=-110mm]current page.north west) {%
+      \textbf{Objet}\par
+      \color{ekmuted}Présenter la version finale du carrousel, compilée, exécutée et validée sous TwinCAT XAE, avec son code source joint pour revue.\par\vspace{5mm}
+      \color{ekink}\textbf{Périmètre}\par
+      \color{ekmuted}Structured Text · huit bacs\\indexation pneumatique · réinitialisations et défauts\par\vspace{5mm}
+      \color{ekink}\textbf{Entreprise}\par
+      \color{ekmuted}TQS · Tri Qualité Service\par\vspace{5mm}
+      \color{ekink}\textbf{Date}\par
+      \color{ekmuted}4 septembre 2026
+    };
+
+  \node[anchor=south west,fill=eksoft,draw=ekprimary!25,rounded corners=4pt,
+    inner xsep=5pt,inner ysep=3pt,text=ekprimarydark,font=\bfseries\scriptsize]
+    at ([xshift=112mm,yshift=25mm]current page.south west)
+    {VERSION 2.0 · IMPLÉMENTATION ET ESSAIS};
+\end{tikzpicture}
+\null\newpage
+
+% ==============================================================

@@ -1,0 +1,59 @@
+% 03 - ARCHITECTURE
+% ==============================================================
+\sectionintro{03 · Architecture TwinCAT}{Modes et flux de données}{Trois modes structurent le fonctionnement de la machine ; une seconde machine d'états détaille le cycle automatique.}
+
+\begin{center}
+\begin{tikzpicture}[node distance=17mm and 12mm]
+  \node[macro] (init) {INIT\\\normalfont\scriptsize commandes à \texttt{FALSE} · attente \texttt{bZero}};
+  \node[macro,right=of init,fill=white] (auto) {AUTO\\\normalfont\scriptsize comptage · vérin · bacs};
+  \node[macro,right=of auto,fill=ekfault,draw=ekteacher!35,text=ekteacher] (fault) {DEFAUT\\\normalfont\scriptsize commandes à \texttt{FALSE}};
+  \draw[flow] (init) -- node[above,font=\scriptsize,text=ekmuted] {\texttt{bZero}} (auto);
+  \draw[flow] (auto) -- node[above,font=\scriptsize,text=ekmuted] {paramètre ou état invalide} (fault);
+  \draw[flow] (fault) edge[bend right=28] node[below,font=\scriptsize,text=ekmuted] {appui maintenu 10 s} (init);
+  \draw[flow] (auto) edge[bend left=28] node[below,font=\scriptsize,text=ekmuted] {appui maintenu 10 s} (init);
+\end{tikzpicture}
+\end{center}
+
+\vspace{3mm}
+\twocolpage{
+  \subsection{DUTs retenus}
+  \begin{card}
+    \texttt{E\_ModeCarrousel}\par\small
+    \pill{INIT}\quad\pill{AUTO}\quad\pill{DEFAUT}
+  \end{card}
+  \begin{card}
+    \texttt{E\_EtatCycle}\par\small
+    \texttt{ATTENTE}, \texttt{COMPTAGE}, \texttt{BAC\_PLEIN}, \texttt{VERIN\_SORTIE}, \texttt{VERIN\_RENTREE}, \texttt{BAC\_SUIVANT}, \texttt{ATTENTE\_BAC}.
+  \end{card}
+
+  \begin{primarycard}
+    \textbf{Priorité globale}\par\small
+    L'appui maintenu pendant 10 s sur l'un des huit boutons est traité avant le \texttt{CASE} des modes. Il remet les compteurs et les commandes à zéro, acquitte le défaut, puis impose un retour par \texttt{INIT}.
+  \end{primarycard}
+}{
+  \subsection{Flux du programme}
+  \begin{center}
+  \begin{tikzpicture}[node distance=9mm,font=\scriptsize]
+    \node[draw=ekline,fill=white,rounded corners=2mm,minimum width=28mm,minimum height=14mm,align=center] (io) {Entrées / consignes\\laser · zéro · reset};
+    \node[draw=ekprimary!40,fill=eksoft,rounded corners=2mm,minimum width=27mm,minimum height=14mm,align=center,right=of io] (main) {\texttt{MAIN}\\liaisons};
+    \node[draw=ekprimary!50,fill=white,rounded corners=2mm,minimum width=34mm,minimum height=14mm,align=center,right=of main] (fb) {\texttt{FB\_Carrousel}\\logique métier};
+    \draw[flow] (io)--(main);
+    \draw[flow] (main)--(fb);
+    \node[draw=ekline,fill=white,rounded corners=2mm,minimum width=34mm,minimum height=13mm,align=center,below=of fb] (out) {Sorties / diagnostic\\vérin · bac · défaut};
+    \draw[flow] (fb)--(out);
+  \end{tikzpicture}
+  \end{center}
+
+  \subsection{Règles de fonctionnement}
+  \begin{enumerate}\small
+    \item la logique de bac n'est exécutée qu'en \texttt{AUTO} ;
+    \item l'index \texttt{nBac} est contrôlé avant accès au tableau ;
+    \item les deux commandes du vérin ne sont jamais vraies simultanément ;
+    \item le changement de bac intervient après le quatrième cycle complet ;
+    \item un bac déjà plein bloque le cycle jusqu'à sa réinitialisation.
+  \end{enumerate}
+}
+
+\newpage
+
+% ==============================================================

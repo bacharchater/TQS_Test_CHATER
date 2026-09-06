@@ -1,0 +1,79 @@
+% ANNEXE ST
+% ==============================================================
+\sectionintro{Annexe A · TwinCAT 3}{Types et interface du bloc}{Le code de la version finale est regroupé dans le fichier \texttt{FB\_Carrousel.st} joint au rapport.}
+
+\noindent
+\begin{minipage}[t]{0.47\textwidth}\vspace{0pt}
+  \subsection{Énumérations}
+\begin{lstlisting}[style=stcode]
+{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_ModeCarrousel :
+(
+    INIT   := 0,
+    AUTO   := 1,
+    DEFAUT := 2
+);
+END_TYPE
+
+{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_EtatCycle :
+(
+    ATTENTE       := 0,
+    COMPTAGE      := 1,
+    BAC_PLEIN     := 2,
+    VERIN_SORTIE  := 3,
+    VERIN_RENTREE := 4,
+    BAC_SUIVANT   := 5,
+    ATTENTE_BAC   := 6
+);
+END_TYPE
+\end{lstlisting}
+
+  \begin{notebox}{Lecture en ligne}
+    Les énumérations rendent le mode et l'état courant directement compréhensibles dans TwinCAT, sans devoir interpréter des numéros d'étape.
+  \end{notebox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}\vspace{0pt}
+  \subsection{Interface de \texttt{FB\_Carrousel}}
+\begin{lstlisting}[style=stcode]
+FUNCTION_BLOCK FB_Carrousel
+VAR_INPUT
+    bLaser    : BOOL; // detection piece
+    bZero     : BOOL; // origine carrousel
+    nPieceBac : INT;  // consigne / bac
+    tVerin    : TIME; // temps mouvement
+    aResetBac : ARRAY[1..8] OF BOOL;
+END_VAR
+
+VAR_OUTPUT
+    bVerinAv : BOOL; // cmd avant
+    bVerinAr : BOOL; // cmd arriere
+    nBac     : INT;  // bac en position
+    bDefaut  : BOOL; // defaut carrousel
+END_VAR
+
+VAR
+    eMode      : E_ModeCarrousel
+                 := E_ModeCarrousel.INIT;
+    eEtatCycle : E_EtatCycle
+                 := E_EtatCycle.ATTENTE;
+    aPieceBac  : ARRAY[1..8] OF INT;
+    nImp       : INT := 0;
+    fbLaser      : R_TRIG;
+    fbTempoVerin : TON;
+    aTempoReset  : ARRAY[1..8] OF TON;
+    bResetGlobal : BOOL;
+    i, j         : INT;
+END_VAR
+\end{lstlisting}
+
+  \begin{primarycard}
+    \textbf{Organisation du source joint}\par\small
+    Le fichier regroupe les deux DUTs, le bloc fonction et un exemple de \texttt{MAIN}. Dans le projet XAE, ces éléments restent répartis dans leurs objets TwinCAT respectifs.
+  \end{primarycard}
+\end{minipage}
+

@@ -1,0 +1,64 @@
+% 01 - CONTEXTE
+% ==============================================================
+\sectionintro{01 · Démarche}{Contexte et objectif}{Conserver la trace de la première approche, puis présenter la version finale structurée et validée sous TwinCAT.}
+
+\noindent
+\begin{minipage}[t]{0.355\textwidth}\vspace{0pt}
+  \begin{primarycard}
+    \textbf{Positionnement}\par\small
+    Lors du test, une version volontairement simplifiée a été développée afin de présenter rapidement le principe de fonctionnement. Le projet a ensuite été repris sous TwinCAT pour approfondir l'architecture, la gestion des huit bacs, les réinitialisations et plusieurs cas limites.
+  \end{primarycard}
+
+  \subsection{Objectif du rapport}
+  \small
+  Le document distingue la \textbf{solution de principe montrée pendant l'entretien} de la \textbf{version finale approfondie, compilée, exécutée et validée sur le runtime local}. Le fichier source joint correspond à cette version finale ; les fonctions non réalisées restent identifiées comme évolutions.
+
+  \subsection{Fil conducteur}
+  \begin{enumerate}\small
+    \item poser le cycle nominal ;
+    \item isoler les modes et les états ;
+    \item traduire la séquence en ST ;
+    \item provoquer des cas limites ;
+    \item corriger puis rejouer les essais.
+  \end{enumerate}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
+  \begin{card}
+    \textbf{Première lecture fonctionnelle}\par\small
+    Le schéma de séquencement initial reste une trace utile : il montre le raisonnement présenté à l'automaticien sans présenter cette première version comme aussi complète que le projet final.
+  \end{card}
+
+  \begin{center}
+  \begin{tikzpicture}[node distance=8mm and 9mm]
+    \node[ginit] (s0) {0};
+    \node[gstep,right=of s0] (s1) {1};
+    \node[gstep,right=of s1] (s2) {2};
+    \node[gstep,right=of s2,fill=eksoft] (s3) {3};
+    \node[gstep,right=of s3] (s4) {4};
+    \draw[flow] (s0)--(s1);
+    \draw[flow] (s1)--(s2);
+    \draw[flow] (s2)--(s3);
+    \draw[flow] (s3)--(s4);
+    \draw[flow] (s4.south)--++(0,-7mm)-|(s1.south);
+    \node[glabel,above=5mm of s0,text width=18mm,align=center] {initialiser};
+    \node[glabel,above=5mm of s1,text width=18mm,align=center] {compter};
+    \node[glabel,above=5mm of s2,text width=18mm,align=center] {tester};
+    \node[glabel,above=5mm of s3,text width=18mm,align=center] {indexer};
+    \node[glabel,above=5mm of s4,text width=18mm,align=center] {bac suivant};
+  \end{tikzpicture}
+  \end{center}
+
+  \begin{notebox}{Ce qui a changé ensuite}
+    La reprise sous TwinCAT remplace cette séquence linéaire par deux niveaux : un mode global \texttt{INIT / AUTO / DEFAUT}, puis une machine d'états dédiée au cycle \texttt{AUTO}.
+  \end{notebox}
+
+  \begin{center}
+    \begin{minipage}[t]{.31\linewidth}\metric{8}{bacs mémorisés}\end{minipage}\hfill
+    \begin{minipage}[t]{.31\linewidth}\metric{4}{cycles / index}\end{minipage}\hfill
+    \begin{minipage}[t]{.31\linewidth}\metric{10 s}{appui long}\end{minipage}
+  \end{center}
+\end{minipage}
+
+\newpage
+
+% ==============================================================

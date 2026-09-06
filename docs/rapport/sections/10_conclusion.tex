@@ -1,0 +1,45 @@
+% 10 - CONCLUSION
+% ==============================================================
+\sectionintro{10 · Synthèse}{Conclusion}{Bilan de l'architecture mise en place, des essais réalisés et des limites identifiées.}
+
+\twocolpage{
+  \begin{primarycard}
+    \textbf{Résultat obtenu}\par\small
+    Le carrousel est structuré autour de trois modes et d'une machine d'états dédiée au cycle \texttt{AUTO}. La logique mémorise le comptage des huit bacs, réalise quatre cycles du vérin par indexation et passe en \texttt{ATTENTE\_BAC} lorsque le bac suivant est déjà plein.
+  \end{primarycard}
+
+  \subsection{Résultats des essais}
+  \begin{itemize}\small
+    \item passage de \texttt{INIT} à \texttt{AUTO} après validation du zéro ;
+    \item comptage sur front montant du capteur laser ;
+    \item indexation et bouclage du bac 8 vers le bac 1 ;
+    \item réinitialisation individuelle ou globale des compteurs ;
+    \item traitement de trois situations limites ;
+    \item acquittement du défaut avec retour par \texttt{INIT}.
+  \end{itemize}
+}{
+  \subsection{Démarche de validation}
+  \small
+  Le cycle a d'abord été implémenté et exécuté sur le runtime local. Les essais ont ensuite couvert le fonctionnement nominal, la saturation des huit bacs et deux paramètres invalides. Les corrections ont été intégrées à la version finale, puis les essais concernés ont été rejoués avec succès.
+
+  \begin{card}
+    \textbf{Version livrée}\par\small
+    Le fichier \texttt{FB\_Carrousel.st} reprend le code de la version finale validée. Il regroupe les deux DUTs, le bloc fonctionnel et un exemple de \texttt{MAIN} afin de faciliter la revue.
+  \end{card}
+
+  \begin{notebox}[colback=eksuccess,colframe=green!30]{Synthèse}
+    La première séquence a permis de poser le principe. La reprise sous TwinCAT a structuré le cycle, isolé les modes machine et documenté les corrections issues des essais.
+  \end{notebox}
+}
+
+\vfill
+{\color{ekline}\rule{\linewidth}{0.6pt}}\vspace{3mm}
+\eyebrow{Références techniques}
+\begin{itemize}\footnotesize\color{ekmuted}
+  \item Beckhoff Information System, \href{https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74391563.html}{\texttt{R\_TRIG} - détection d'un front montant dans la bibliothèque Tc2\_Standard}.
+  \item Beckhoff Information System, \href{https://infosys.beckhoff.com/content/1033/tc3_plc_intro/7647315979.html}{exemple TwinCAT 3 associant machine d'états, temporisateur et trigger}.
+\end{itemize}
+
+\newpage
+
+% ==============================================================

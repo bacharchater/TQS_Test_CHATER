@@ -2,73 +2,84 @@
 
 Projet TwinCAT 3 réalisé à la suite d'un test technique pour un poste d'automaticien / développeur PLC.
 
-Le projet reprend le pilotage d'un carrousel de conditionnement à 8 bacs, avec comptage des pièces, indexation pneumatique, resets opérateur et gestion de plusieurs cas limites.
+Le projet pilote un carrousel de conditionnement à 8 bacs : comptage des pièces, indexation pneumatique, réinitialisations opérateur et gestion de plusieurs cas limites. Il comprend la logique PLC, une visualisation locale TwinCAT et la documentation technique complète.
 
-## Fonctionnalités
+## PLC
 
-- Comptage des pièces sur front montant avec `R_TRIG`
-- Gestion indépendante des 8 bacs
-- Indexation par 4 cycles complets du vérin
-- Temps de mouvement paramétrable
-- Reset individuel de chaque bac
-- Reset global après maintien 10 s
-- Modes `INIT / AUTO / DEFAUT`
-- Attente opérateur lorsqu'un bac déjà plein revient en position
-- Gestion des paramètres invalides
-- Acquittement défaut avec retour par `INIT`
+La logique métier est regroupée dans `FB_Carrousel`; `MAIN` assure les liaisons avec les entrées, les sorties et la visualisation.
 
-## Architecture
+- comptage sur front montant avec `R_TRIG` ;
+- mémoire indépendante des 8 bacs ;
+- indexation par 4 cycles complets du vérin ;
+- modes `INIT`, `AUTO` et `DEFAUT` ;
+- machine d'états du cycle automatique ;
+- reset individuel ou global après un maintien de 10 s ;
+- attente opérateur si le bac suivant est déjà plein ;
+- contrôle des paramètres invalides et acquittement du défaut.
 
-MAIN  
-└── FB_Carrousel  
-  ├── INIT  
-  ├── AUTO  
-  │ ├── ATTENTE  
-  │ ├── COMPTAGE  
-  │ ├── BAC_PLEIN  
-  │ ├── VERIN_SORTIE  
-  │ ├── VERIN_RENTREE  
-  │ ├── BAC_SUIVANT  
-  │ └── ATTENTE_BAC  
-  └── DEFAUT  
+Les sources se trouvent dans `PLC_Carrousel/` :
 
-Les états sont définis avec :
+```text
+PLC_Carrousel/
+├── DUTs/       # E_ModeCarrousel, E_EtatCycle
+├── POUs/       # MAIN, FB_Carrousel
+├── VISUs/      # PLC Visualization V1
+└── PlcTask.TcTTO
+```
 
-- `E_ModeCarrousel`
-- `E_EtatCycle`
+## PLC Visualization V1
 
-## Validation
+La première interface est intégrée au projet PLC avec l'objet `PLC_Carrousel/VISUs/Visualization.TcVIS`. Elle sert à la supervision et aux essais sur le runtime local :
 
-Le projet a été compilé et exécuté sous TwinCAT 3 sur runtime local.
+- mode, état courant, bac actif et avancement du cycle vérin ;
+- compteurs et consigne des 8 bacs ;
+- reset individuel de chaque bac ;
+- indicateurs de défaut et de mouvement du vérin ;
+- simulation du capteur zéro et du passage d'une pièce.
 
-Les essais ont notamment permis de valider :
-
-- le référencement par le capteur zéro ;
-- le comptage des pièces ;
-- le passage de bac ;
-- les 4 cycles de vérin ;
-- le retour du bac 8 vers le bac 1 ;
-- les resets individuels et global ;
-- l'attente sur un bac déjà plein ;
-- le passage en défaut pour une consigne de pièces ou un temps vérin invalide.
-
-Plusieurs cas limites ont été reproduits puis corrigés pendant les essais.
+![PLC Visualization V1 du carrousel TQS](docs/images/VISU1.png)
 
 ## Rapport technique
 
-Le rapport détaillé est disponible ici :
+Le [rapport final au format PDF](docs/Rapport_TQS_Chater_Bach-char.pdf) présente l'architecture TwinCAT, la machine d'états, les extraits Structured Text, les essais et les cas limites corrigés.
 
-`docs/Rapport_TQS_Chater_Bach-char.pdf`
+Les sources LaTeX sont versionnées dans `docs/rapport/` et séparées par sections :
 
-## Projet TwinCAT
+```text
+docs/rapport/
+├── main.tex
+├── sections/
+│   ├── 00_couverture.tex
+│   ├── 00_sommaire.tex
+│   ├── 01_contexte_objectif.tex
+│   ├── ...
+│   ├── 10_conclusion.tex
+│   └── annexe_a_types_interface.tex
+└── images/
+```
 
-Les sources TwinCAT sont directement présentes dans le dépôt.
+Pour recompiler le rapport avec une distribution LaTeX complète :
 
-Une archive du projet est également disponible :
+```bash
+cd docs/rapport
+latexmk -pdf main.tex
+```
 
-`TQS_Test_CHATER.tnzip`
+Le PDF de référence reste conservé sous `docs/Rapport_TQS_Chater_Bach-char.pdf`.
+
+## TwinCAT HMI V2 — évolution prévue
+
+La PLC Visualization V1 constitue l'interface locale actuelle. Une future TwinCAT HMI V2 pourra reprendre les mêmes données PLC dans une interface web plus moderne, avec navigation, vues de diagnostic, alarmes et historique. Cette V2 est une évolution prévue et n'est pas incluse dans l'état actuel du dépôt.
+
+## Validation et ouverture du projet
+
+Le projet a été compilé, exécuté et testé sous TwinCAT 3 sur un runtime local. Les essais couvrent notamment le référencement, le comptage, l'indexation, le retour du bac 8 vers le bac 1, les resets et les paramètres invalides.
+
+- projet XAE : `TQS_Test_CHATER.tsproj` ;
+- archive TwinCAT : `TQS_Test_CHATER.tnzip` ;
+- rapport final : `docs/Rapport_TQS_Chater_Bach-char.pdf`.
 
 ---
 
 **Chater Bach-char**  
-Ingénieur systèmes
+Ingénieur systèmes numériques & instrumentation

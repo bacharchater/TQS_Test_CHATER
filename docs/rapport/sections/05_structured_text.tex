@@ -1,0 +1,75 @@
+% 05 - IMPLEMENTATION
+% ==============================================================
+\sectionintro{05 · Structured Text}{Comptage, bacs et indexation}{Des traitements courts, directement observables en ligne dans le bloc fonctionnel.}
+
+\noindent
+\begin{minipage}[t]{0.355\textwidth}\vspace{0pt}
+  \subsection{Front du capteur laser}
+\begin{lstlisting}[style=stcode]
+fbLaser(CLK := bLaser);
+
+IF fbLaser.Q
+AND (NOT aResetBac[nBac]) THEN
+    aPieceBac[nBac] :=
+        aPieceBac[nBac] + 1;
+END_IF
+\end{lstlisting}
+
+  \small
+  \texttt{R\_TRIG} évite d'incrémenter plusieurs fois la même pièce lorsque le signal reste actif pendant plusieurs cycles PLC. Le même test est exécuté dans \texttt{ATTENTE}, avant le passage à \texttt{COMPTAGE}, puis dans \texttt{COMPTAGE}. La condition sur \texttt{aResetBac[nBac]} donne la priorité à la réinitialisation si les deux événements surviennent dans le même cycle. Le trigger ne remplace pas un filtrage matériel ou un traitement antiparasite. Le comptage reste limité à ces états : aucune pièce ne doit être présentée avant la validation du zéro ni pendant l'indexation.
+
+  \subsection{Données par bac}
+  \begin{card}
+    \texttt{aPieceBac : ARRAY[1..8] OF INT}\par\small
+    Une valeur est conservée pour chaque bac. Seule la case correspondant à \texttt{nBac} est incrémentée.
+  \end{card}
+
+  \begin{notebox}{Noms retenus}
+    \texttt{bLaser}, \texttt{bZero}, \texttt{nBac}, \texttt{nImp}, \texttt{tVerin} et \texttt{aResetBac} restent courts et lisibles pour une mise au point en atelier.
+  \end{notebox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.605\textwidth}\vspace{0pt}
+  \subsection{Séquence pneumatique réelle}
+\begin{lstlisting}[style=stcode]
+E_EtatCycle.VERIN_SORTIE:
+    bVerinAv := TRUE;
+    bVerinAr := FALSE;
+    fbTempoVerin(IN := TRUE,
+                 PT := tVerin);
+
+    IF fbTempoVerin.Q THEN
+        bVerinAv := FALSE;
+        fbTempoVerin(IN := FALSE);
+        eEtatCycle :=
+            E_EtatCycle.VERIN_RENTREE;
+    END_IF
+
+E_EtatCycle.VERIN_RENTREE:
+    bVerinAv := FALSE;
+    bVerinAr := TRUE;
+    fbTempoVerin(IN := TRUE,
+                 PT := tVerin);
+
+    IF fbTempoVerin.Q THEN
+        bVerinAr := FALSE;
+        fbTempoVerin(IN := FALSE);
+        nImp := nImp + 1;
+
+        IF nImp >= 4 THEN
+            eEtatCycle :=
+                E_EtatCycle.BAC_SUIVANT;
+        ELSE
+            eEtatCycle :=
+                E_EtatCycle.VERIN_SORTIE;
+        END_IF
+    END_IF
+\end{lstlisting}
+
+  \begin{notebox}{Commandes déterministes}
+    Au début de chaque cycle PLC, les deux commandes sont placées à \texttt{FALSE}. Seul l'état de mouvement actif commande ensuite \texttt{bVerinAv} ou \texttt{bVerinAr}. La fin d'une rentrée incrémente \texttt{nImp} sans activer de défaut.
+  \end{notebox}
+\end{minipage}
+
+\newpage
+
+% ==============================================================

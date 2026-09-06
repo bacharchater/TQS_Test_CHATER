@@ -1,0 +1,249 @@
+\documentclass[10pt,a4paper]{article}
+
+% ==============================================================
+% Rapport technique TQS - Chater Bach-char
+% Version 2.0 : implementation et validation TwinCAT 3
+% Direction artistique inspiree du design system Ekloraa / PROJ4
+% Compilation : pdflatex (trois passes)
+% ==============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[sfdefault]{sourcesans}
+\usepackage{inconsolata}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,left=1.55cm,right=1.55cm,top=1.55cm,bottom=1.45cm,headheight=21pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,calc,fit,positioning,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{lastpage}
+
+% ---------- Palette Ekloraa / PROJ4 ----------
+\definecolor{ekprimary}{HTML}{4F46D8}
+\definecolor{ekprimarydark}{HTML}{251C91}
+\definecolor{ekviolet}{HTML}{7C6EE6}
+\definecolor{ekink}{HTML}{172033}
+\definecolor{ekmuted}{HTML}{5D6B82}
+\definecolor{ekline}{HTML}{D7DCE8}
+\definecolor{eksoft}{HTML}{F0F1FF}
+\definecolor{ekpaper}{HTML}{FBFBFE}
+\definecolor{ekcard}{HTML}{FFFFFF}
+\definecolor{ekinfo}{HTML}{EAF6FF}
+\definecolor{eksuccess}{HTML}{EAF8F1}
+\definecolor{ekwarning}{HTML}{FFF6E3}
+\definecolor{ekfault}{HTML}{FCECEE}
+\definecolor{ekteacher}{HTML}{8B1E28}
+\pagecolor{ekpaper}
+\color{ekink}
+
+\hypersetup{
+  colorlinks=true,
+  linktoc=all,
+  linkcolor=ekprimarydark,
+  urlcolor=ekprimary,
+  citecolor=ekprimary,
+  pdftitle={Pilotage d'un carrousel de conditionnement - conception et validation sous TwinCAT 3},
+  pdfauthor={Chater Bach-char},
+  pdfsubject={Logique de carrousel implementee et testee sous TwinCAT 3},
+  pdfkeywords={TQS, TwinCAT 3, Structured Text, machine d'etats, automatisme, validation, carrousel}
+}
+
+% ---------- Base typographique ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{1.5em}
+\setlist[itemize]{leftmargin=1.25em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.35em,itemsep=2pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.18}
+\captionsetup{font=small,labelfont={bf,color=ekprimarydark},textfont={color=ekmuted}}
+
+\titleformat{\section}
+  {\fontsize{19}{21}\selectfont\bfseries\color{ekink}}
+  {}{0pt}{}
+\titlespacing*{\section}{0pt}{0pt}{8pt}
+\titleformat{\subsection}
+  {\fontsize{11.5}{13}\selectfont\bfseries\color{ekprimarydark}}
+  {}{0pt}{}
+\titlespacing*{\subsection}{0pt}{7pt}{3pt}
+
+% ---------- Sommaire cliquable ----------
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\addto\captionsfrench{\renewcommand{\contentsname}{Sommaire}}
+\renewcommand{\cfttoctitlefont}{\fontsize{23}{25}\selectfont\bfseries\color{ekink}}
+\renewcommand{\cftaftertoctitle}{%
+  \par\vspace{6pt}{\color{ekprimary}\rule{1.15cm}{2.2pt}}\vspace{5pt}%
+}
+\setlength{\cftbeforetoctitleskip}{5pt}
+\setlength{\cftaftertoctitleskip}{0pt}
+\renewcommand{\cftsecfont}{\fontsize{10.5}{12.5}\selectfont\color{ekink}\bfseries}
+\renewcommand{\cftsecpagefont}{\fontsize{10.5}{12.5}\selectfont\color{ekprimarydark}\bfseries}
+\renewcommand{\cftsecleader}{\color{ekline}\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{9pt}
+
+% ---------- En-tete / pied ----------
+\pagestyle{fancy}
+\fancyhf{}
+\newcommand{\headerlower}[1]{\raisebox{-5pt}[0pt][0pt]{#1}}
+\fancyhead[L]{\headerlower{\footnotesize\bfseries\color{ekprimarydark}CHATER BACH-CHAR}}
+\fancyhead[C]{\headerlower{\footnotesize\color{ekmuted}Conception \& validation · Carrousel de conditionnement}}
+\fancyhead[R]{\headerlower{\footnotesize\color{ekmuted}TQS · 04.09.2026}}
+\fancyfoot[L]{\scriptsize\color{ekmuted}Projet TwinCAT 3 - retour après entretien}
+\fancyfoot[R]{\scriptsize\color{ekmuted}\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.45pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{ekline}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
+
+% ---------- Composants editoriaux ----------
+\newcommand{\eyebrow}[1]{%
+  {\fontsize{7.5}{9}\selectfont\bfseries\color{ekprimary}\MakeUppercase{#1}}\par\vspace{3pt}%
+}
+
+\newcommand{\sectionintro}[3]{%
+  \eyebrow{#1}
+  \section[#1 : #2]{#2}
+  {\color{ekmuted}\large #3}\par
+  \vspace{4pt}{\color{ekprimary}\rule{1.15cm}{2.2pt}}\vspace{8pt}
+}
+
+\newtcolorbox{card}[1][]{
+  enhanced,
+  colback=ekcard,
+  colframe=ekline,
+  boxrule=0.55pt,
+  arc=3mm,
+  left=3.2mm,right=3.2mm,top=2.6mm,bottom=2.6mm,
+  before skip=4pt,after skip=4pt,
+  drop shadow={black!7!white},
+  #1
+}
+
+\newtcolorbox{primarycard}[1][]{
+  enhanced,
+  colback=eksoft,
+  colframe=ekprimary!35,
+  boxrule=0.65pt,
+  arc=3mm,
+  left=3.2mm,right=3.2mm,top=2.6mm,bottom=2.6mm,
+  before skip=4pt,after skip=4pt,
+  #1
+}
+
+\newtcolorbox{notebox}[2][]{
+  enhanced,
+  title={#2},
+  fonttitle=\bfseries\small,
+  coltitle=ekprimarydark,
+  colback=ekcard,
+  colframe=ekprimary!35,
+  boxrule=0.6pt,
+  arc=2.5mm,
+  left=3mm,right=3mm,top=2.3mm,bottom=2.3mm,
+  before skip=4pt,after skip=4pt,
+  #1
+}
+
+\newcommand{\pill}[1]{%
+  \tikz[baseline=(p.base)]\node[fill=eksoft,draw=ekprimary!25,rounded corners=4pt,
+  inner xsep=5pt,inner ysep=2.3pt,text=ekprimarydark,font=\bfseries\scriptsize] (p) {#1};%
+}
+
+\newcommand{\metric}[2]{%
+  \begin{card}[halign=center]
+  {\fontsize{18}{19}\selectfont\bfseries\color{ekprimary}#1}\par
+  {\scriptsize\color{ekmuted}#2}
+  \end{card}%
+}
+
+\newcommand{\twocolpage}[2]{%
+  \noindent
+  \begin{minipage}[t]{0.355\textwidth}\vspace{0pt}#1\end{minipage}\hfill
+  \begin{minipage}[t]{0.605\textwidth}\vspace{0pt}#2\end{minipage}%
+}
+
+\newcommand{\ok}{\textcolor{green!45!black}{\bfseries OK}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ---------- Styles GRAFCET ----------
+\tikzset{
+  gstep/.style={draw=ekprimarydark,very thick,fill=white,minimum width=9mm,
+    minimum height=8mm,rounded corners=.5pt,font=\bfseries\scriptsize,text=ekprimarydark},
+  ginit/.style={gstep,double,double distance=1.2pt,fill=eksoft},
+  gtrans/.style={draw=ekprimarydark,line width=1.5pt,minimum width=12mm,minimum height=0pt},
+  gaction/.style={draw=ekline,fill=white,rounded corners=2mm,text width=46mm,
+    align=left,inner sep=3mm,font=\small},
+  glabel/.style={font=\scriptsize\itshape,text=ekmuted,align=left,text width=42mm},
+  flow/.style={-{Latex[length=2mm]},thick,draw=ekprimarydark},
+  macro/.style={draw=ekprimary!45,fill=eksoft,rounded corners=3mm,
+    minimum width=43mm,minimum height=21mm,align=center,font=\bfseries\small,text=ekprimarydark}
+}
+
+% ---------- Structured Text ----------
+\lstdefinelanguage{ST}{
+  morekeywords={FUNCTION_BLOCK,PROGRAM,TYPE,VAR,VAR_INPUT,VAR_OUTPUT,END_VAR,END_TYPE,
+  BOOL,INT,TIME,ARRAY,OF,IF,THEN,ELSIF,ELSE,END_IF,CASE,END_CASE,FOR,TO,DO,END_FOR,
+  TRUE,FALSE,AND,OR,NOT,MOD,R_TRIG,TON},
+  sensitive=false,
+  morecomment=[l]{//},
+  morecomment=[s]{(*}{*)}
+}
+
+\lstdefinestyle{stcode}{
+  language=ST,
+  basicstyle=\ttfamily\fontsize{7.30}{8.35}\selectfont,
+  keywordstyle=\bfseries\color{ekprimarydark},
+  commentstyle=\color{ekmuted},
+  stringstyle=\color{ekteacher},
+  numbers=left,
+  numberstyle=\tiny\color{ekmuted!75},
+  numbersep=7pt,
+  frame=single,
+  rulecolor=\color{ekline},
+  backgroundcolor=\color{white},
+  framesep=4pt,
+  xleftmargin=2.2em,
+  framexleftmargin=1.8em,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  keepspaces=true,
+  columns=fullflexible,
+  tabsize=2,
+  aboveskip=5pt,
+  belowskip=5pt
+}
+
+\begin{document}
+
+% ==============================================================
+% CONTENU DU RAPPORT
+% ==============================================================
+\input{sections/00_couverture}
+\input{sections/00_sommaire}
+\input{sections/01_contexte_objectif}
+\input{sections/02_systeme_perimetre}
+\input{sections/03_architecture_twincat}
+\input{sections/04_sequencement}
+\input{sections/05_structured_text}
+\input{sections/06_robustesse}
+\input{sections/07_essais_twincat}
+\input{sections/08_retour_essais}
+\input{sections/09_limites_evolutions}
+\input{sections/10_conclusion}
+\input{sections/annexe_a_types_interface}
+
+\end{document}

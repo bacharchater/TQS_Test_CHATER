@@ -1,0 +1,39 @@
+% 08 - CAS LIMITES
+% ==============================================================
+\sectionintro{08 · Retour d'essais}{Cas limites détectés et corrigés}{Les essais sur le runtime local ont fait apparaître des comportements absents du cycle nominal.}
+
+\begin{card}[colback=ekwarning,colframe=orange!35]
+  \textbf{1 · Consigne de pièces égale à zéro}\par
+  \begin{tabularx}{\linewidth}{@{}L{27mm}Y@{}}
+    Symptôme & \texttt{0 >= 0} rendait chaque bac plein immédiatement et lançait une rotation continue.\\
+    Correction & contrôle de \texttt{nPieceBac <= 0} avant l'exécution du cycle \texttt{AUTO}.\\
+    Résultat & passage en \texttt{DEFAUT} et neutralisation des deux commandes du vérin.
+  \end{tabularx}
+\end{card}
+
+\begin{card}[colback=ekwarning,colframe=orange!35]
+  \textbf{2 · Huit bacs déjà pleins}\par
+  \begin{tabularx}{\linewidth}{@{}L{27mm}Y@{}}
+    Symptôme & après le retour 8 vers 1, le programme pouvait continuer à parcourir les bacs sans intervention opérateur.\\
+    Correction & ajout de l'état \texttt{ATTENTE\_BAC} lorsque le compteur du nouveau bac a déjà atteint la consigne.\\
+    Résultat & arrêt sur le bac concerné, réinitialisation par l'opérateur, puis reprise du comptage.
+  \end{tabularx}
+\end{card}
+
+\begin{card}[colback=ekwarning,colframe=orange!35]
+  \textbf{3 · Temps vérin égal à zéro}\par
+  \begin{tabularx}{\linewidth}{@{}L{27mm}Y@{}}
+    Symptôme & le \texttt{TON} terminait immédiatement et les états pouvaient s'enchaîner à la cadence du cycle PLC.\\
+    Correction & contrôle de \texttt{tVerin <= T\#0MS} avec passage en \texttt{DEFAUT}.\\
+    Résultat & aucune commande de mouvement tant que le paramètre n'est pas corrigé et acquitté.
+  \end{tabularx}
+\end{card}
+
+\begin{primarycard}
+  \textbf{Apport principal des essais}\par\small
+  Les essais ont couvert le cycle nominal, les valeurs limites et la saturation des huit bacs. Chaque correction a ensuite été rejouée sur le runtime local.
+\end{primarycard}
+
+\newpage
+
+% ==============================================================

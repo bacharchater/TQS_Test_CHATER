@@ -1,0 +1,48 @@
+% 02 - SYSTEME ET PERIMETRE
+% ==============================================================
+\sectionintro{02 · Réalisation}{Système et périmètre implémenté}{Un bloc fonctionnel unique porte la logique métier ; le programme principal reste volontairement léger.}
+
+\twocolpage{
+  \subsection{Structure du projet XAE}
+  \begin{tikzpicture}[node distance=6.2mm,font=\scriptsize]
+    \node[draw=ekprimary!45,fill=eksoft,rounded corners=2mm,minimum width=53mm,minimum height=9mm,align=left] (root) {\textbf{TQS\_Test\_CHATER}};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of root,minimum width=53mm,minimum height=8mm,align=left] (plc) {PLC · projet PLC};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of plc,minimum width=53mm,minimum height=8mm,align=left] (dut) {DUTs · \texttt{E\_ModeCarrousel}\\\phantom{DUTs · }\texttt{E\_EtatCycle}};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of dut,minimum width=53mm,minimum height=8mm,align=left] (pou) {POUs · \texttt{MAIN}\\\phantom{POUs · }\texttt{FB\_Carrousel}};
+    \node[draw=ekline,fill=white,rounded corners=2mm,below=of pou,minimum width=53mm,minimum height=8mm,align=left] (task) {PlcTask · exécution cyclique};
+    \draw[flow] (root)--(plc);
+    \draw[flow] (plc)--(dut);
+    \draw[flow] (dut)--(pou);
+    \draw[flow] (pou)--(task);
+  \end{tikzpicture}
+
+  \begin{primarycard}
+    \textbf{Répartition des rôles}\par\small
+    \texttt{MAIN} relie les variables d'entrée et de sortie. Toute la logique machine est regroupée dans \texttt{FB\_Carrousel}, ce qui facilite la lecture en ligne et la réutilisation du bloc.
+  \end{primarycard}
+}{
+  \subsection{Fonctions présentes dans la version réalisée}
+  \begin{tabularx}{\linewidth}{@{}L{37mm}Y@{}}
+    \toprule
+    \textbf{Fonction} & \textbf{Comportement implémenté}\\
+    \midrule
+    Référencement & attente du capteur inductif, puis affectation du bac 1\\
+    Comptage & front montant du signal du capteur laser avec \texttt{R\_TRIG}\\
+    Mémoire & huit compteurs dans \texttt{aPieceBac[1..8]}\\
+    Indexation & quatre cycles complets de sortie et de rentrée du vérin\\
+    Temporisation & temps de mouvement réglable par \texttt{tVerin}\\
+    Bouclage & retour logique du bac 8 vers le bac 1\\
+    Bac suivant déjà plein & attente de l'opérateur dans \texttt{ATTENTE\_BAC} jusqu'à la réinitialisation du bac\\
+    Réinitialisation & appui bref : bac concerné ; maintien 10 s : huit compteurs\\
+    Défaut & paramètres invalides, commandes logiques à \texttt{FALSE}, reprise par \texttt{INIT}\\
+    \bottomrule
+  \end{tabularx}
+
+  \begin{notebox}[colback=ekwarning,colframe=orange!35]{Interprétation retenue}
+    Le terme « 4 impulsions » a été traduit par quatre cycles complets du vérin : sortie temporisée, rentrée temporisée, puis incrément de \texttt{nImp}.
+  \end{notebox}
+}
+
+\newpage
+
+% ==============================================================
