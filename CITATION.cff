@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Pour citer ce projet, merci d'utiliser les informations ci-dessous."
+title: "TQS - Carrousel de conditionnement"
+type: software
+authors:
+  - given-names: "Chater"
+    family-names: "Bach-char"
+repository-code: "https://github.com/bacharchater/TQS_Test_CHATER"
+abstract: "Projet TwinCAT 3 de pilotage d'un carrousel de conditionnement, avec PLC Visualization V1 et TwinCAT HMI V2."

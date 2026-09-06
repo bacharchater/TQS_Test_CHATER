@@ -139,7 +139,8 @@ Le projet PLC a été compilé, exécuté et testé sous TwinCAT 3 sur un runtim
 - archive TwinCAT vérifiée : `tqs/TQS_Test_CHATER.tnzip` ;
 - rapport final : `docs/Rapport_TQS_Chater_Bach-char.pdf`.
 
----
+## Auteur et droits
 
-**Chater Bach-char**  
-Ingénieur systèmes numériques & instrumentation
+Conception et réalisation : **Chater Bach-char**, ingénieur systèmes numériques et instrumentation.
+
+Copyright © 2026 Chater Bach-char. Tous droits réservés. Ce dépôt public ne comporte actuellement aucune licence open source accordant un droit général de réutilisation. Les conditions détaillées figurent dans [`NOTICE.md`](NOTICE.md), et les informations de citation dans [`CITATION.cff`](CITATION.cff).

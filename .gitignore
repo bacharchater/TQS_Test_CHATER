@@ -3,6 +3,17 @@
 **/.DS_Store
 ._*
 
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+**/credentials.*
+**/secrets.*
+
 # Editor and backup files
 *.bak
 *.~u
